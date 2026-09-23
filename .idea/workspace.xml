@@ -8,8 +8,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b49cef77-4569-4145-8cfe-db880e7efb99" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/(tabs)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/(tabs)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/(tabs)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/(tabs)/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/role-selection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/role-selection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/constants/apiConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/constants/apiConfig.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/maathacare-web-admin/src/pages/AdminLogin.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/maathacare-web-admin/src/pages/AdminLogin.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +24,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="1924" />
+    <option name="cachedIndexableFilesCount" value="1914" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -40,61 +47,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.3510496844040867" />
-      <entry key="MS500" value="2.757266797605287" />
-      <entry key="S2" value="8.572906745708135" />
-      <entry key="S5" value="17.74957792249643" />
-      <entry key="S10" value="30.42386063164668" />
-      <entry key="S30" value="60.54193041453691" />
-      <entry key="S60" value="77.71233643420636" />
-      <entry key="M2" value="89.47119511847328" />
-      <entry key="M5" value="98.75548889772172" />
-      <entry key="M10" value="103.2502597262347" />
-      <entry key="M15" value="105.15056167463266" />
-      <entry key="M30" value="107.36552227070335" />
-      <entry key="H1" value="108.62246720635024" />
-      <entry key="H2" value="109.2950447141881" />
-      <entry key="H4" value="109.6433263862531" />
-      <entry key="D1" value="109.93995853940815" />
-      <entry key="W1" value="109.99140788223484" />
+      <entry key="MS100" value="1.366394451429091" />
+      <entry key="MS500" value="3.3914978609983897" />
+      <entry key="S2" value="6.407509307252348" />
+      <entry key="S5" value="7.7811748637377" />
+      <entry key="S10" value="8.354628529968025" />
+      <entry key="S30" value="8.776272484040224" />
+      <entry key="S60" value="8.891333601733642" />
+      <entry key="M2" value="9.403514828139755" />
+      <entry key="M5" value="20.68526750909959" />
+      <entry key="M10" value="45.28177249094616" />
+      <entry key="M15" value="62.24105238411615" />
+      <entry key="M30" value="87.41591145940798" />
+      <entry key="H1" value="104.31737725368994" />
+      <entry key="H2" value="114.13497138744725" />
+      <entry key="H4" value="119.42953111397695" />
+      <entry key="D1" value="124.05179919291852" />
+      <entry key="W1" value="124.86404967308178" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
-      <entry key="S2" value="9.946901524186216E-117" />
-      <entry key="S5" value="4.555193688067166E-47" />
-      <entry key="S10" value="8.734163699418853E-24" />
-      <entry key="S30" value="3.192810226713372E-8" />
-      <entry key="S60" value="2.5191902107862634E-4" />
-      <entry key="M2" value="0.02242892765320917" />
-      <entry key="M5" value="0.33178780188093865" />
-      <entry key="M10" value="0.8145761744802715" />
-      <entry key="M15" value="1.0989083333037792" />
-      <entry key="M30" value="1.4824983916526986" />
-      <entry key="H1" value="1.7219151145613525" />
-      <entry key="H2" value="1.8557555717160306" />
-      <entry key="H4" value="1.9265281577857667" />
-      <entry key="D1" value="1.9875629231088319" />
-      <entry key="W1" value="1.998218520924351" />
+      <entry key="S2" value="1.6118852558167706E-263" />
+      <entry key="S5" value="8.75720204412488E-106" />
+      <entry key="S10" value="3.8295750786355655E-53" />
+      <entry key="S30" value="5.225760792208092E-18" />
+      <entry key="S60" value="3.222917363108477E-9" />
+      <entry key="M2" value="8.022368650275278E-5" />
+      <entry key="M5" value="0.03485443581505861" />
+      <entry key="M10" value="0.26401616859495197" />
+      <entry key="M15" value="0.5185142314255706" />
+      <entry key="M30" value="1.0183424265539593" />
+      <entry key="H1" value="1.42712344773166" />
+      <entry key="H2" value="1.689451290478251" />
+      <entry key="H4" value="1.838179048997653" />
+      <entry key="D1" value="1.9720728848389846" />
+      <entry key="W1" value="1.9959863280754175" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.220331896065907" />
-      <entry key="MS500" value="2.709644165145766" />
-      <entry key="S2" value="8.538407568454215" />
-      <entry key="S5" value="17.71729193889615" />
-      <entry key="S10" value="30.388299965179097" />
-      <entry key="S30" value="60.50882782157768" />
-      <entry key="S60" value="77.688772054186" />
-      <entry key="M2" value="89.47794293639315" />
-      <entry key="M5" value="99.0739870713789" />
-      <entry key="M10" value="104.05321018888249" />
-      <entry key="M15" value="106.23979167561023" />
-      <entry key="M30" value="108.84188809475637" />
-      <entry key="H1" value="110.34091373081783" />
-      <entry key="H2" value="111.14895370675166" />
-      <entry key="H4" value="111.56890158824727" />
-      <entry key="D1" value="111.92735837426657" />
-      <entry key="W1" value="111.98960299855783" />
+      <entry key="MS100" value="1.1973658127878752" />
+      <entry key="MS500" value="3.2728155324497155" />
+      <entry key="S2" value="6.332544301018051" />
+      <entry key="S5" value="7.7431091800858205" />
+      <entry key="S10" value="8.33394136854952" />
+      <entry key="S30" value="8.768975081294212" />
+      <entry key="S60" value="8.887570258541482" />
+      <entry key="M2" value="9.40059000806664" />
+      <entry key="M5" value="20.714306048044765" />
+      <entry key="M10" value="45.537905141410675" />
+      <entry key="M15" value="62.75158825600225" />
+      <entry key="M30" value="88.4279120190467" />
+      <entry key="H1" value="105.74043497702931" />
+      <entry key="H2" value="115.82211160780908" />
+      <entry key="H4" value="121.26647690740239" />
+      <entry key="D1" value="126.02365497365052" />
+      <entry key="W1" value="126.86000469260708" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -106,35 +113,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.BackendApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "push-notifications",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/sem 4/e23-co2060-Maathacare",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "D:\\sem 4\\e23-co2060-Maathacare\\code\\Frontend\\MaathaCare-Frontend\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.BackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;push-notifications&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/sem 4/e23-co2060-Maathacare&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\sem 4\\e23-co2060-Maathacare\\code\\Frontend\\MaathaCare-Frontend\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="BackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="Backend" />
@@ -162,7 +169,10 @@
       <workItem from="1783398371536" duration="29822000" />
       <workItem from="1784641450967" duration="14012000" />
       <workItem from="1784737756158" duration="40000" />
-      <workItem from="1784954160938" duration="3497000" />
+      <workItem from="1784954160938" duration="6156000" />
+      <workItem from="1785850859005" duration="5828000" />
+      <workItem from="1789058848870" duration="1211000" />
+      <workItem from="1790051263741" duration="9146000" />
     </task>
     <servers />
   </component>

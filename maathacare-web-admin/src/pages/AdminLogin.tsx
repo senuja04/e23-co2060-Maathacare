@@ -2,7 +2,7 @@ import { useState, type CSSProperties, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const API_URL = (((import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env?.VITE_API_URL)
-  || 'http://localhost:8080').replace(/\/$/, '');
+  || 'https://e23-co2060-maathacare-production.up.railway.app').replace(/\/$/, '');
 const LOGIN_ENDPOINT = '/api/users/staff/login';
 
 type JsonRecord = Record<string, unknown>;

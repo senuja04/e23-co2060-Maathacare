@@ -1,20 +1,25 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef } from "react";
-import { Animated, Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import {
+  Animated,
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 const { width } = Dimensions.get("window");
 
 export default function SplashScreen() {
   const router = useRouter();
-  
-  // Animation drivers
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.7)).current;
   const slideUpAnim = useRef(new Animated.Value(40)).current;
 
   useEffect(() => {
-    // 1. Trigger the cinematic entry animations simultaneously
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -31,51 +36,48 @@ export default function SplashScreen() {
         toValue: 0,
         duration: 1000,
         useNativeDriver: true,
-      })
+      }),
     ]).start();
 
-    // 2. Seamless redirect to your role selection gateway screen
     const timer = setTimeout(() => {
       router.replace("/role-selection");
     }, 3200);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [fadeAnim, router, scaleAnim, slideUpAnim]);
 
   return (
     <LinearGradient
-      // Soft, high-end gradient blend matching your app's palette
       colors={["#FFF0F8", "#FFFFFF", "#F0F8FF"]}
       style={styles.container}
     >
-      <Animated.View 
+      <Animated.View
         style={[
-          styles.content, 
-          { 
-            opacity: fadeAnim, 
+          styles.content,
+          {
+            opacity: fadeAnim,
             transform: [
               { scale: scaleAnim },
-              { translateY: slideUpAnim }
-            ] 
-          }
+              { translateY: slideUpAnim },
+            ],
+          },
         ]}
       >
-        {/* Decorative background glow ring */}
         <View style={styles.glowRing} />
 
-        {/* 🌟 Swap this with any premium artwork asset you like, e.g., center.jpeg or logo.png */}
         <Image
-          source={require("../../assets/images/logo.png")} 
+          source={require("../assets/images/logo.png")}
           style={styles.mainImage}
           resizeMode="contain"
         />
 
-        {/* Minimalist Subtext Layout */}
         <Text style={styles.appName}>MaathaCare</Text>
-        
+
         <View style={styles.divider} />
-        
-        <Text style={styles.tagline}>Together for a safer motherhood</Text>
+
+        <Text style={styles.tagline}>
+          Together for a safer motherhood
+        </Text>
       </Animated.View>
     </LinearGradient>
   );
@@ -109,23 +111,23 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 38,
     fontWeight: "900",
-    color: "#665A7A", // Deep elegant plum tone from your Gateway theme
+    color: "#665A7A",
     letterSpacing: 2,
-    textShadowColor: "rgba(217, 98, 160, 0.15)", // Pink tinted drop shadow[cite: 13]
+    textShadowColor: "rgba(217, 98, 160, 0.15)",
     textShadowOffset: { width: 0, height: 4 },
     textShadowRadius: 10,
   },
   divider: {
     width: 40,
     height: 3,
-    backgroundColor: "#F472B6", // Vibrant highlight accents[cite: 13]
+    backgroundColor: "#F472B6",
     borderRadius: 2,
     marginVertical: 15,
   },
   tagline: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#988FA8", // Styled clean gray matching your dashboard text[cite: 13]
+    color: "#988FA8",
     letterSpacing: 0.5,
     textAlign: "center",
   },

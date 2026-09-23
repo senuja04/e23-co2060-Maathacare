@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { registerAndSyncPushToken } from "../../services/pushNotificationService";
 const { width } = Dimensions.get("window");
 
 import { API_BASE_URL } from "../../constants/apiConfig";
@@ -28,6 +29,11 @@ export default function HomeTab() {
 
   const [phmInfo, setPhmInfo] = useState({ name: "Loading...", id: "" });
 
+  useFocusEffect(
+    useCallback(() => {
+      void registerAndSyncPushToken();
+    }, []),
+  );
   useFocusEffect(
     useCallback(() => {
       const fetchPregnancyData = async () => {

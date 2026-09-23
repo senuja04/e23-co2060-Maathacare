@@ -72,9 +72,8 @@ export default function TabLayout() {
 
 
       {/* HIDE THE REST */}
-  
+      <Tabs.Screen name="dashboard" options={{ href: null }} />
       <Tabs.Screen name="phm-profile" options={{ href: null }} />
-      <Tabs.Screen name="register" options={{ href: null }} />
       <Tabs.Screen name="edit-mother-profile" options={{ href: null }} />
       <Tabs.Screen name="notification" options={{ href: null }} />
     </Tabs>

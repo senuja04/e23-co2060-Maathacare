@@ -90,7 +90,7 @@ export default function GatewayScreen() {
           {/* --- TOP BRANDING (Using your logo image) --- */}
           <View style={styles.header}>
             <Image
-              source={require("../../assets/images/logo.png")}
+              source={require("../assets/images/logo.png")}
               style={styles.logoImage}
               resizeMode="contain"
             />
@@ -107,7 +107,7 @@ export default function GatewayScreen() {
           {/* --- HERO ILLUSTRATION (Using Center image) --- */}
           <View style={styles.heroContainer}>
             <Image
-              source={require("../../assets/images/center.jpeg")}
+              source={require("../assets/images/center.jpeg")}
               style={styles.heroImage}
               resizeMode="contain"
             />
@@ -120,7 +120,7 @@ export default function GatewayScreen() {
             <View style={styles.cardHeader}>
               <View style={styles.avatarPlaceholderPink}>
                 <Image
-                  source={require("../../assets/images/mother.jpeg")}
+                  source={require("../assets/images/mother.jpeg")}
                   style={styles.cardIcon}
                   resizeMode="cover"
                 />
@@ -147,7 +147,7 @@ export default function GatewayScreen() {
             <View style={styles.cardHeader}>
               <View style={styles.avatarPlaceholderBlue}>
                 <Image
-                  source={require("../../assets/images/PHM.jpeg")}
+                  source={require("../assets/images/PHM.jpeg")}
                   style={styles.cardIcon}
                   resizeMode="cover"
                 />

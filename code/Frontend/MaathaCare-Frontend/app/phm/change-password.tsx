@@ -1,8 +1,12 @@
+import { API_BASE_URL } from "@/constants/apiConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import { useRouter } from "expo-router";
-import { ChevronLeft, Key, Lock, ShieldCheck } from "lucide-react-native";
+import { ChevronLeft, Eye, EyeOff, Key, Lock, ShieldCheck } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -29,9 +33,50 @@ export default function ChangePasswordScreen() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const [showOld, setShowOld] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
-  const handleUpdatePassword = async () => {
-    // ... (Keep your existing logic here)
+ const handleUpdatePassword = async (event?: any) => {
+    // 1. Validation
+    if (newPassword !== confirmPassword) {
+      Alert.alert("Error", "New passwords do not match.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const token = await AsyncStorage.getItem("userToken");
+      const userId = await AsyncStorage.getItem("userId");
+      
+      if (!token || !userId) {
+        Alert.alert("Error", "Session expired.");
+        return;
+      }
+
+      await axios.put(
+      `${API_BASE_URL}/api/phm/change-password/${userId}`,
+      { 
+        // Ensure these keys exactly match the fields in PasswordChangeRequest.java
+        oldPassword: oldPassword, 
+        newPassword: newPassword 
+      },
+      {
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json' 
+        }
+      }
+    );
+
+      Alert.alert("Success", "Password updated successfully.");
+      router.back();
+    } catch (error: any) {
+      console.error("Change Password Error:", error.response?.data || error.message);
+      Alert.alert("Error", typeof error.response?.data === 'string' ? error.response.data : "Request failed.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -70,6 +115,9 @@ export default function ChangePasswordScreen() {
             icon={Lock}
             value={oldPassword}
             onChange={setOldPassword}
+            isPassword={true}
+            show={showOld}
+            setShow={setShowOld}
           />
           <View style={styles.divider} />
           <InputField
@@ -77,17 +125,23 @@ export default function ChangePasswordScreen() {
             icon={Key}
             value={newPassword}
             onChange={setNewPassword}
+            isPassword={true}
+            show={showNew}
+            setShow={setShowNew}
           />
           <InputField
             label="Confirm New Password"
             icon={Key}
             value={confirmPassword}
             onChange={setConfirmPassword}
+            isPassword={true}
+            show={showConfirm}
+            setShow={setShowConfirm}
           />
 
           <TouchableOpacity
             style={styles.saveButton}
-            onPress={handleUpdatePassword}
+            onPress={() => handleUpdatePassword()}
             disabled={isLoading}
           >
             {isLoading ? (
@@ -103,20 +157,32 @@ export default function ChangePasswordScreen() {
 }
 
 // Reusable Input Component to keep code clean
-const InputField = ({ label, icon: Icon, ...props }: any) => (
+const InputField = ({ label, icon: Icon, isPassword, show, setShow, ...props }: any) => (
   <View style={styles.inputGroup}>
     <Text style={styles.label}>{label}</Text>
     <View style={styles.inputWrapper}>
       <Icon color={COLORS.textMuted} size={20} style={{ marginRight: 12 }} />
       <TextInput
-        style={styles.input}
-        placeholder={`Enter ${label.toLowerCase()}`}
-        secureTextEntry
-        {...props}
+          style={styles.input}
+          placeholder={`Enter ${label.toLowerCase()}`}
+          secureTextEntry={isPassword && !show}
+          value={props.value}
+          onChangeText={props.onChange}
       />
+      {isPassword && (
+        <TouchableOpacity onPress={() => setShow(!show)}>
+          {show ? (
+            <EyeOff color={COLORS.textMuted} size={20} />
+          ) : (
+            <Eye color={COLORS.textMuted} size={20} />
+          )}
+        </TouchableOpacity>
+      )}
     </View>
   </View>
 );
+
+
 
 const styles = StyleSheet.create({
   topNav: {

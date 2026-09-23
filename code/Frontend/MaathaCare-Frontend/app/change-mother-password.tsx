@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useRouter } from "expo-router";
-import { ChevronLeft, Key, Lock, ShieldCheck } from "lucide-react-native";
+import { ChevronLeft, Eye, EyeOff, Key, Lock, ShieldCheck } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -160,22 +160,33 @@ export default function ChangeMotherPasswordScreen() {
 }
 
 // Reusable Input Component
-const InputField = ({ label, icon: Icon, value, onChange }: any) => (
-  <View style={styles.inputGroup}>
-    <Text style={styles.label}>{label}</Text>
-    <View style={styles.inputWrapper}>
-      <Icon color={COLORS.textMuted} size={20} style={{ marginRight: 12 }} />
-      <TextInput
-        style={styles.input}
-        placeholder={`Enter ${label.toLowerCase()}`}
-        placeholderTextColor="#9ca3af"
-        secureTextEntry
-        value={value}
-        onChangeText={onChange}
-      />
+const InputField = ({ label, icon: Icon, value, onChange }: any) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  return (
+    <View style={styles.inputGroup}>
+      <Text style={styles.label}>{label}</Text>
+      <View style={styles.inputWrapper}>
+        <Icon color={COLORS.textMuted} size={20} style={{ marginRight: 12 }} />
+        <TextInput
+          style={styles.input}
+          placeholder={`Enter ${label.toLowerCase()}`}
+          placeholderTextColor="#9ca3af"
+          secureTextEntry={!isPasswordVisible} // Toggle based on state
+          value={value}
+          onChangeText={onChange}
+        />
+        <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
+          {isPasswordVisible ? (
+            <EyeOff color={COLORS.textMuted} size={20} />
+          ) : (
+            <Eye color={COLORS.textMuted} size={20} />
+          )}
+        </TouchableOpacity>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   topNav: {

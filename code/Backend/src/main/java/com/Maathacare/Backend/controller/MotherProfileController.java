@@ -1,11 +1,13 @@
 package com.Maathacare.Backend.controller;
 
 import com.Maathacare.Backend.dto.MotherProfileRequest;
-import com.Maathacare.Backend.model.entity.MotherProfile; // Correct entity
+import com.Maathacare.Backend.dto.PasswordChangeRequest;
+import com.Maathacare.Backend.model.entity.MotherProfile;
 import com.Maathacare.Backend.repository.SymptomRepository;
-import com.Maathacare.Backend.repository.MotherProfileRepository; // Correct repository
+import com.Maathacare.Backend.repository.MotherProfileRepository;
 import com.Maathacare.Backend.service.MotherProfileService;
-import com.Maathacare.Backend.service.StorageService; // Use your existing StorageService
+import com.Maathacare.Backend.service.StorageService;
+import com.Maathacare.Backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +35,8 @@ public class MotherProfileController {
     @Autowired
     private StorageService storageService; // Use the service you already have
 
-    // ... (Keep your existing createProfile, saveKickCount, getKickHistory methods) ...
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/upload-profile-picture/{userId}")
     public ResponseEntity<?> uploadProfilePicture(
@@ -90,6 +93,21 @@ public class MotherProfileController {
             return ResponseEntity.ok(motherProfileService.updateMotherProfile(userId, request));
         } catch (RuntimeException exception) {
             return ResponseEntity.badRequest().body(exception.getMessage());
+        }
+    }
+    @PutMapping("/change-password/{userId}")
+    public ResponseEntity<?> changePassword(@PathVariable String userId, @RequestBody PasswordChangeRequest request) {
+        try {
+            // 🟢 Add this check to ensure the Mother is only changing her own password
+            String authenticatedUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+            if (!authenticatedUserId.equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only change your own password.");
+            }
+
+            userService.updatePassword(userId, request.getOldPassword(), request.getNewPassword());
+            return ResponseEntity.ok("Password updated successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

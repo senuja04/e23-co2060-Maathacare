@@ -1,7 +1,8 @@
+import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import { useRouter } from "expo-router";
+import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -18,6 +19,8 @@ import { API_BASE_URL } from "../constants/apiConfig";
 export default function App() {
   const router = useRouter();
   const { t } = useTranslation();
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const checkUserLogin = async () => {
@@ -36,7 +39,6 @@ export default function App() {
   }, []);
 
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     if (!phoneNumber || !password) {
@@ -85,13 +87,25 @@ export default function App() {
       />
 
       <Text style={styles.label}>{t("password")}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder={t("placeholderPassword")}
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry={true}
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.inputInside}
+          placeholder={t("placeholderPassword")}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!showPassword} // Toggle based on state
+        />
+        <TouchableOpacity 
+          onPress={() => setShowPassword(!showPassword)}
+          style={styles.eyeIcon}
+        >
+          <Ionicons 
+            name={showPassword ? "eye-off" : "eye"} 
+            size={24} 
+            color="#6c757d" 
+          />
+        </TouchableOpacity>
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>{t("login")}</Text>
@@ -160,4 +174,23 @@ const styles = StyleSheet.create({
   registerContainer: { marginTop: 20 },
   registerText: { color: "#6c757d", fontSize: 15 },
   registerLink: { color: "#FF69B4", fontSize: 15, fontWeight: "bold" },
+  passwordContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#dee2e6",
+    marginBottom: 15,
+    paddingHorizontal: 10,
+  },
+  inputInside: {
+    flex: 1,
+    height: 50,
+    color: "#212529",
+  },
+  eyeIcon: {
+    padding: 8,
+  },
 });

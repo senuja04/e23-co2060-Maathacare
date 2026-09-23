@@ -187,7 +187,7 @@ public class AppointmentService {
 
     private void sendInstantPushNotification(String targetPushToken, String title, String body) {
         if (targetPushToken == null || targetPushToken.isEmpty()) {
-            System.out.println("⚠️ Skipping notification: No push token registered for this user.");
+            System.err.println("CRITICAL: Notification failed. Token is NULL or EMPTY.");
             return;
         }
 

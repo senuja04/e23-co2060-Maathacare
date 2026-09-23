@@ -1,25 +1,33 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
-  Alert,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context"; // 🟢 Updated to safe-area-context
+import LanguageSwitcher from "../components/LanguageSwitcher";
 import { API_BASE_URL } from "../constants/apiConfig";
-import LanguageSwitcher from "../components/LanguageSwitcher"; 
-import { useTranslation } from 'react-i18next'; // 🟢 Added translation hook
+
+// 🟢 Helper to decode JWT without extra libraries
+const decodeToken = (token: string) => {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
+  }
+};
 
 export default function StaffLogin() {
   const router = useRouter();
-  const { t } = useTranslation(); // 🟢 Initialized translation
+  const { t } = useTranslation();
 
   const [staffId, setStaffId] = useState("");
   const [password, setPassword] = useState("");
@@ -50,8 +58,15 @@ export default function StaffLogin() {
       }
 
       const data = await response.json();
+      
+      // 🟢 Extract userId from the token payload (the 'sub' field)
+      const decoded = decodeToken(data.token);
+      const userId = decoded?.sub || ""; 
+
       await AsyncStorage.setItem("userToken", data.token);
       await AsyncStorage.setItem("userRole", data.role);
+      await AsyncStorage.setItem("userId", userId.toString()); // 🟢 Now uses extracted ID
+
       router.replace("/phm/phm_dashboard");
     } catch (error) {
       setErrorMessage("Network Error: Could not connect to the server.");
@@ -62,7 +77,6 @@ export default function StaffLogin() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* 🟢 Blue-themed Language Switcher */}
       <LanguageSwitcher color="#0056b3" />
 
       <KeyboardAvoidingView

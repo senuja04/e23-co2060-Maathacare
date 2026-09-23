@@ -1,12 +1,16 @@
 package com.Maathacare.Backend.controller;
 
 import com.Maathacare.Backend.dto.PHMProfileRequest;
+import com.Maathacare.Backend.dto.PasswordChangeRequest;
 import com.Maathacare.Backend.model.entity.MotherProfile;
 import com.Maathacare.Backend.model.entity.PHMProfile;
 import com.Maathacare.Backend.repository.MotherProfileRepository; // 🟢 ADD THIS
 import com.Maathacare.Backend.service.PHMProfileService;
+import com.Maathacare.Backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired; // 🟢 ADD THIS
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.Maathacare.Backend.service.StorageService;
@@ -107,6 +111,26 @@ public class PHMProfileController {
             return ResponseEntity.badRequest().body("Failed to update PHM profile: " + e.getMessage());
         }
     }
+    @Autowired
+    private UserService userService;
 
+    @PutMapping("/change-password/{userId}")
+    public ResponseEntity<?> changePassword(
+            @PathVariable String userId,
+            @RequestBody PasswordChangeRequest request) {
+        try {
+            // Authenticated check ensures the PHM can only change their own password
+            String authenticatedUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+            if (!authenticatedUserId.equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only change your own password.");
+            }
+
+            userService.updatePassword(userId, request.getOldPassword(), request.getNewPassword());
+            return ResponseEntity.ok("Password updated successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
 
 }

@@ -4,7 +4,6 @@ import * as ImagePicker from "expo-image-picker";
 import { useFocusEffect, useRouter } from "expo-router";
 
 import {
-  Bell,
   Briefcase,
   CalendarDays,
   Camera,
@@ -16,6 +15,7 @@ import {
   MapPin,
   Settings,
   User,
+  Users,
 } from "lucide-react-native";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -43,16 +43,15 @@ import { API_BASE_URL } from "../../constants/apiConfig";
 const { width } = Dimensions.get("window");
 
 const THEME = {
-  primary: "#3B82F6",
-  primaryDark: "#2563EB",
+  primary: "#2563EB",
+  primaryDark: "#1D4ED8",
   primaryLight: "#EFF6FF",
-  bg: "#F8FAFC",
+  bg: "#F0F4F8", // Soft professional light blue background
   surface: "#FFFFFF",
   textHeader: "#0F172A",
   textMuted: "#64748B",
-  iconBg: "#F1F5F9",
-  accent: "#E2E8F0",
-  border: "#E2E8F0",
+  iconBg: "#E2E8F0",
+  border: "#CBD5E1",
   dangerBg: "#FEF2F2",
   dangerBorder: "#FECACA",
   dangerText: "#EF4444",
@@ -138,6 +137,7 @@ export default function PHMDashboard() {
 
   const loadDashboardData = async () => {
     try {
+      setLoading(true);
       const token = await AsyncStorage.getItem("userToken");
       if (!token) {
         router.replace("/");
@@ -155,7 +155,10 @@ export default function PHMDashboard() {
           setProfileImage(`${data.profilePictureUrl}?v=${Date.now()}`);
         }
       }
-      if (patientsRes.ok) setPatients(await patientsRes.json());
+      if (patientsRes.ok) {
+        const patientData = await patientsRes.json();
+        setPatients(patientData);
+      }
     } catch (error) {
       console.error("Dashboard Load Error:", error);
     } finally {
@@ -190,7 +193,6 @@ export default function PHMDashboard() {
 
       try {
         const token = await AsyncStorage.getItem("userToken");
-
         const formData = new FormData();
         formData.append("file", {
           uri: imageUri,
@@ -261,11 +263,11 @@ export default function PHMDashboard() {
       const promises = selectedMothers.map((mother) => {
         const payload = {
           mother: { id: mother.id },
-          phm: { id: phmInfo.id },
+          phm: { id: phmInfo?.id },
           appointmentDate: date.toISOString(),
           status: "SCHEDULED",
           remarks: remarks || "Routine Checkup",
-          location: phmInfo.mohArea || "Health Center",
+          location: phmInfo?.mohArea || "Health Center",
         };
         return fetch(`${API_BASE_URL}/api/appointments/schedule`, {
           method: "POST",
@@ -322,64 +324,94 @@ export default function PHMDashboard() {
   };
 
   const renderHome = () => (
-    <View style={styles.homeWrapper}>
-      <View style={styles.homeHeaderContainer}>
-        <View style={styles.greetingRow}>
-          <Text style={styles.greetingText}>
-            Good Morning, {phmInfo?.fullName?.split(" ")[0] || "Sahana"}
-          </Text>
-          <TouchableOpacity style={styles.notificationBtn}>
-            <Bell color={THEME.textHeader} size={22} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.summaryCard}>
-          <View style={styles.summaryContent}>
-            <Text style={styles.summaryLabel}>Service Area</Text>
-            <Text style={styles.summaryTitle} numberOfLines={1}>
-              {phmInfo?.mohArea || "Central Province"}
-            </Text>
-            <View style={styles.summaryDetailsRow}>
-              <MapPin color="white" size={14} style={{ marginRight: 6 }} />
-              <Text style={styles.summaryDetailText}>
-                {phmInfo?.gnDivision || "Zone 1 GN"}
-              </Text>
-            </View>
-            <View style={styles.summaryDetailsRow}>
-              <User color="white" size={14} style={{ marginRight: 6 }} />
-              <Text style={styles.summaryDetailText}>
-                {patients.length} Active Patients
-              </Text>
-            </View>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.homeWrapper}>
+
+      {/* 1. Welcome Section (Not a Card: Large distinct typography) */}
+      <View style={styles.topBannerContainer}>
+        <Text style={styles.welcomeSubtitle}>WELCOME BACK,</Text>
+        <Text style={styles.welcomeTitle} numberOfLines={1}>
+          {phmInfo?.fullName || "A. Weerasinghe"}
+        </Text>
+        <Text style={styles.welcomeRole}>Public Health Midwife</Text>
+      </View>
+
+      {/* 2. Service Area: The single prominent visual anchor card */}
+      <View style={styles.heroCard}>
+        <View style={styles.heroHeaderRow}>
+          <View>
+            <Text style={styles.heroSubLabel}>SERVICE AREA</Text>
+            <Text style={styles.heroTitle}>{phmInfo?.mohArea || "Akurana"}</Text>
           </View>
-          <View style={styles.summaryGraphic}>
-            <Text style={styles.summaryGraphicText}>
-              {phmInfo?.mohArea?.charAt(0) || "M"}
-            </Text>
+          <View style={styles.heroBadge}>
+            <Text style={styles.heroBadgeText}>{phmInfo?.mohArea?.charAt(0) || "A"}</Text>
+          </View>
+        </View>
+
+        <View style={styles.heroDivider} />
+
+        <View style={styles.heroFooterRow}>
+          <View style={styles.heroInfoItem}>
+            <MapPin size={14} color="#93C5FD" style={{ marginRight: 6 }} />
+            <Text style={styles.heroInfoText}>{phmInfo?.mohArea || "Akurana"}</Text>
           </View>
         </View>
       </View>
-      <View style={styles.whiteBodyContainer}>
-        <View style={styles.singleActionContainer}>
-          <TouchableOpacity
-            style={styles.wideActionCard}
-            onPress={() => setIsMothersPageVisible(true)}
-          >
-            <View style={styles.wideActionIconWrapper}>
-              <User color={THEME.primary} size={24} />
-            </View>
-            <View style={styles.wideActionTextGroup}>
-              <Text style={styles.wideActionTitle}>{t("assignedMothers")}</Text>
-              <Text style={styles.wideActionSub}>
-                Manage your patient registry
-              </Text>
-            </View>
-            <View style={styles.wideActionArrowBg}>
-              <ChevronRight color={THEME.primary} size={20} />
-            </View>
-          </TouchableOpacity>
+
+      {/* 3. Overview: Horizontal connected dashboard strip */}
+      <View style={styles.overviewStripCard}>
+        <View style={styles.overviewItem}>
+          <Text style={styles.overviewNumber}>{patients.length}</Text>
+          <Text style={styles.overviewLabel}>Total Mothers</Text>
+        </View>
+        <View style={styles.overviewDividerVertical} />
+        <View style={styles.overviewItem}>
+          <Text style={styles.overviewNumber}>{phmInfo?.mohArea ? "1" : "0"}</Text>
+          <Text style={styles.overviewLabel}>Active Zones</Text>
         </View>
       </View>
-    </View>
+
+      {/* 4. Quick Actions: Hierarchy layout (Large primary action + compact secondary row) */}
+      <View style={styles.actionSectionContainer}>
+        <Text style={styles.sectionHeaderTitle}>QUICK ACTIONS</Text>
+
+        {/* Primary Action Card (Larger visual footprint) */}
+        <TouchableOpacity
+          style={styles.primaryActionCard}
+          onPress={() => setIsMothersPageVisible(true)}
+          activeOpacity={0.8}
+        >
+          <View style={styles.primaryActionTop}>
+            <View style={styles.primaryIconBox}>
+              <Users color="#1D4ED8" size={24} />
+            </View>
+            <ChevronRight color={THEME.textMuted} size={20} />
+          </View>
+          <View style={styles.primaryActionContent}>
+            <Text style={styles.primaryActionTitle}>{t("assignedMothers") || "Assigned Mothers"}</Text>
+            <Text style={styles.primaryActionSub}>Manage your active patient registry and records</Text>
+          </View>
+        </TouchableOpacity>
+
+        {/* Secondary Action Row (Compact horizontal button) */}
+        <TouchableOpacity
+          style={styles.secondaryActionCard}
+          onPress={() => setActiveTab("Appointment")}
+          activeOpacity={0.8}
+        >
+          <View style={styles.secondaryLeftGroup}>
+            <View style={styles.secondaryIconBox}>
+              <CalendarDays color="#D97706" size={20} />
+            </View>
+            <View style={styles.secondaryTextGroup}>
+              <Text style={styles.secondaryActionTitle}>Scheduled Clinics</Text>
+              <Text style={styles.secondaryActionSub}>View upcoming appointments</Text>
+            </View>
+          </View>
+          <ChevronRight color={THEME.textMuted} size={18} />
+        </TouchableOpacity>
+      </View>
+
+    </ScrollView>
   );
 
   const renderProfile = () => (
@@ -389,14 +421,14 @@ export default function PHMDashboard() {
     >
       <View style={styles.topHeaderRow}>
         <View style={{ width: 24 }} />
-        <Text style={styles.headerTitle}>{t("profileOverview")}</Text>
+        <Text style={styles.headerTitle}>{t("profileOverview") || "Profile Overview"}</Text>
         <TouchableOpacity onPress={() => setSettingsModalVisible(true)}>
           <Settings color={THEME.textHeader} size={24} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.profileSection}>
-<View style={styles.avatarWrapper}>
+        <View style={styles.avatarWrapper}>
           <View style={styles.avatarInner}>
             {profileImage ? (
               <Image
@@ -435,30 +467,30 @@ export default function PHMDashboard() {
             })
           }
         >
-          <Text style={styles.editProfileText}>✏️ {t("editProfile")}</Text>
+          <Text style={styles.editProfileText}>✏️ {t("editProfile") || "Edit Profile"}</Text>
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.sectionTitle}>{t("myInformation")}</Text>
+      <Text style={styles.sectionTitle}>{t("myInformation") || "My Information"}</Text>
       <View style={styles.listCard}>
         <ExpandableListItem
           icon={User}
-          title={t("personalDetails")}
+          title={t("personalDetails") || "Personal Details"}
           isExpanded={expandedSection === "personal"}
           onPress={() => toggleSection("personal")}
         >
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>{t("fullName")}</Text>
+            <Text style={styles.detailLabel}>{t("fullName") || "Full Name"}</Text>
             <Text style={styles.detailValue}>{phmInfo?.fullName || "N/A"}</Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>{t("phoneNumber")}</Text>
+            <Text style={styles.detailLabel}>{t("phoneNumber") || "Phone Number"}</Text>
             <Text style={styles.detailValue}>
               {phmInfo?.contactNumber || "Not Set"}
             </Text>
           </View>
           <View style={[styles.detailRow, { borderBottomWidth: 0 }]}>
-            <Text style={styles.detailLabel}>{t("emailAddress")}</Text>
+            <Text style={styles.detailLabel}>{t("emailAddress") || "Email Address"}</Text>
             <Text style={styles.detailValue}>
               {phmInfo?.email || "No Email"}
             </Text>
@@ -467,34 +499,34 @@ export default function PHMDashboard() {
         <View style={styles.listDivider} />
         <ExpandableListItem
           icon={Briefcase}
-          title={t("professionalDetails")}
+          title={t("professionalDetails") || "Professional Details"}
           isExpanded={expandedSection === "professional"}
           onPress={() => toggleSection("professional")}
         >
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>{t("province")}</Text>
+            <Text style={styles.detailLabel}>{t("province") || "Province"}</Text>
             <Text style={styles.detailValue}>
               {phmInfo?.province || "Central Province"}
             </Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>{t("district")}</Text>
+            <Text style={styles.detailLabel}>{t("district") || "District"}</Text>
             <Text style={styles.detailValue}>
               {phmInfo?.district || "Kandy"}
             </Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>{t("mohArea")}</Text>
+            <Text style={styles.detailLabel}>{t("mohArea") || "MOH Area"}</Text>
             <Text style={styles.detailValue}>{phmInfo?.mohArea || "N/A"}</Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>{t("gnDivision")}</Text>
+            <Text style={styles.detailLabel}>{t("gnDivision") || "GN Division"}</Text>
             <Text style={styles.detailValue}>
               {phmInfo?.gnDivision || "N/A"}
             </Text>
           </View>
           <View style={[styles.detailRow, { borderBottomWidth: 0 }]}>
-            <Text style={styles.detailLabel}>{t("phmId")}</Text>
+            <Text style={styles.detailLabel}>{t("phmId") || "PHM ID"}</Text>
             <Text style={styles.detailValue}>
               {phmInfo?.staffId || phmInfo?.registrationNumber || "Pending"}
             </Text>
@@ -502,20 +534,8 @@ export default function PHMDashboard() {
         </ExpandableListItem>
       </View>
 
-      <Text style={styles.sectionTitle}>{t("systemPreferences")}</Text>
+      <Text style={styles.sectionTitle}>{t("systemPreferences") || "System Preferences"}</Text>
       <View style={styles.listCard}>
-        <TouchableOpacity style={styles.listItem}>
-          <View style={styles.listItemLeft}>
-            <View style={styles.iconBox}>
-              <Bell color={THEME.primary} size={18} />
-            </View>
-            <Text style={styles.listItemTitle}>{t("notifications")}</Text>
-          </View>
-          <View style={styles.listItemRight}>
-            <ChevronRight color={THEME.textMuted} size={18} />
-          </View>
-        </TouchableOpacity>
-        <View style={styles.listDivider} />
         <TouchableOpacity
           style={styles.listItem}
           onPress={() => setLangModalVisible(true)}
@@ -524,7 +544,7 @@ export default function PHMDashboard() {
             <View style={styles.iconBox}>
               <Globe color={THEME.primary} size={18} />
             </View>
-            <Text style={styles.listItemTitle}>{t("language")}</Text>
+            <Text style={styles.listItemTitle}>{t("language") || "Language"}</Text>
           </View>
           <View style={styles.listItemRight}>
             <Text style={styles.listItemValue}>{selectedLang}</Text>
@@ -541,7 +561,7 @@ export default function PHMDashboard() {
         }}
       >
         <LogOut color={THEME.dangerText} size={18} style={{ marginRight: 8 }} />
-        <Text style={styles.logoutText}>{t("secureLogout")}</Text>
+        <Text style={styles.logoutText}>{t("secureLogout") || "Secure Logout"}</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -551,7 +571,6 @@ export default function PHMDashboard() {
     { label: "සිංහල", code: "si" },
     { label: "தமிழ்", code: "ta" },
   ];
-
 
   const renderAppointmentModal = () => (
     <Modal visible={modalVisible} animationType="fade" transparent={true}>
@@ -636,7 +655,7 @@ export default function PHMDashboard() {
                     styles.modalBtn,
                     {
                       backgroundColor:
-                        selectedMothers.length > 0 ? "#0056b3" : "#94A3B8",
+                        selectedMothers.length > 0 ? THEME.primary : "#94A3B8",
                     },
                   ]}
                 >
@@ -700,7 +719,7 @@ export default function PHMDashboard() {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={handleSaveAppointment}
-                  style={[styles.modalBtn, { backgroundColor: "#0056b3" }]}
+                  style={[styles.modalBtn, { backgroundColor: THEME.primary }]}
                 >
                   <Text style={{ color: "white", fontWeight: "bold" }}>
                     Confirm
@@ -736,7 +755,7 @@ export default function PHMDashboard() {
               style={{ transform: [{ rotate: "180deg" }] }}
             />
           </TouchableOpacity>
-          <Text style={styles.modernHeaderTitle}>{t("assignedMothers")}</Text>
+          <Text style={styles.modernHeaderTitle}>{t("assignedMothers") || "Assigned Mothers"}</Text>
           <View style={{ width: 44 }} />
         </View>
 
@@ -826,50 +845,6 @@ export default function PHMDashboard() {
             )}
           />
         </View>
-
-        <Modal
-          visible={assignModalVisible}
-          animationType="fade"
-          transparent={true}
-        >
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Link Patient</Text>
-              <Text style={styles.modalSub}>
-                Enter the mother's 12-digit NIC number to add her to your care
-                list.
-              </Text>
-              <TextInput
-                style={styles.modalInput}
-                placeholder="e.g. 199012345678"
-                placeholderTextColor="#94A3B8"
-                value={searchNic}
-                onChangeText={setSearchNic}
-              />
-              <View style={styles.modalActions}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setAssignModalVisible(false);
-                    setSearchNic("");
-                  }}
-                  style={[styles.modalBtn, { backgroundColor: "#F1F5F9" }]}
-                >
-                  <Text style={{ color: "#475569", fontWeight: "bold" }}>
-                    Cancel
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={handleAssignMother}
-                  style={[styles.modalBtn, { backgroundColor: "#0056b3" }]}
-                >
-                  <Text style={{ color: "white", fontWeight: "bold" }}>
-                    Link
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
 
         {renderAppointmentModal()}
       </SafeAreaView>
@@ -967,7 +942,7 @@ export default function PHMDashboard() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{t("profileSettings")}</Text>
+            <Text style={styles.modalTitle}>{t("profileSettings") || "Profile Settings"}</Text>
             <TouchableOpacity
               style={styles.settingsOptionBtn}
               onPress={() => {
@@ -1070,7 +1045,7 @@ export default function PHMDashboard() {
 const styles = StyleSheet.create({
   mainContainer: { flex: 1, backgroundColor: THEME.bg },
   container: { flex: 1, backgroundColor: THEME.bg },
-  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
+  centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: THEME.bg },
   pageTitleHeader: {
     paddingHorizontal: 24,
     paddingVertical: 10,
@@ -1082,126 +1057,236 @@ const styles = StyleSheet.create({
     color: THEME.textHeader,
     letterSpacing: -0.5,
   },
-  homeWrapper: { flex: 1, backgroundColor: THEME.bg },
-  homeHeaderContainer: {
+  homeWrapper: { flexGrow: 1, backgroundColor: THEME.bg, paddingBottom: 40 },
+
+  /* 1. Welcome Section Styles (Not a card) */
+  topBannerContainer: {
     paddingTop: Platform.OS === "ios" ? 60 : 40,
     paddingHorizontal: 24,
-    paddingBottom: 20,
+    marginBottom: 20,
   },
-  greetingRow: {
+  welcomeSubtitle: {
+    fontSize: 30,
+    fontWeight: "800",
+    color: THEME.primary,
+    letterSpacing: 1.5,
+    marginBottom: 4,
+  },
+  welcomeTitle: {
+    color: THEME.textHeader,
+    fontSize: 24,
+    fontWeight: "900",
+    letterSpacing: -0.5,
+    marginBottom: 2,
+  },
+  welcomeRole: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: THEME.textMuted,
+  },
+
+  /* 2. Service Area Hero Card Style */
+  heroCard: {
+    backgroundColor: THEME.primary,
+    borderRadius: 24,
+    padding: 22,
+    marginHorizontal: 24,
+    marginBottom: 16,
+    shadowColor: THEME.primary,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  heroHeaderRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
   },
-  greetingText: {
-    color: THEME.textHeader,
-    fontSize: 24,
+  heroSubLabel: {
+    color: "#93C5FD",
+    fontSize: 11,
+    fontWeight: "700",
+    letterSpacing: 1,
+    marginBottom: 4,
+  },
+  heroTitle: {
+    color: "#FFFFFF",
+    fontSize: 26,
     fontWeight: "800",
-    letterSpacing: -0.5,
   },
-  notificationBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    backgroundColor: THEME.surface,
+  heroBadge: {
+    width: 52,
+    height: 52,
+    borderRadius: 16,
+    backgroundColor: "rgba(255,255,255,0.2)",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  heroBadgeText: {
+    color: "#FFFFFF",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  heroDivider: {
+    height: 1,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    marginVertical: 14,
+  },
+  heroFooterRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  heroInfoItem: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  heroInfoText: {
+    color: "#FFFFFF",
+    fontSize: 13,
+    fontWeight: "600",
+  },
+
+  /* 3. Overview Strip Card Style */
+  overviewStripCard: {
+    backgroundColor: THEME.surface,
+    borderRadius: 20,
+    marginHorizontal: 24,
+    marginBottom: 24,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
     borderColor: THEME.border,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
+    shadowOpacity: 0.02,
+    shadowRadius: 6,
     elevation: 2,
   },
-  summaryCard: {
-    backgroundColor: THEME.primary,
-    borderRadius: 20,
-    padding: 20,
-    flexDirection: "row",
+  overviewItem: {
+    flex: 1,
     alignItems: "center",
-    justifyContent: "space-between",
-    shadowColor: THEME.primary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 15,
-    elevation: 8,
   },
-  summaryContent: { flex: 1 },
-  summaryLabel: {
-    color: THEME.primaryLight,
+  overviewNumber: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: THEME.textHeader,
+    marginBottom: 2,
+  },
+  overviewLabel: {
     fontSize: 12,
     fontWeight: "600",
-    marginBottom: 4,
+    color: THEME.textMuted,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
-  summaryTitle: {
-    color: "white",
-    fontSize: 22,
-    fontWeight: "800",
-    marginBottom: 12,
+  overviewDividerVertical: {
+    width: 1,
+    height: 32,
+    backgroundColor: THEME.border,
   },
-  summaryDetailsRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 6,
-  },
-  summaryDetailText: { color: "white", fontSize: 13, fontWeight: "500" },
-  summaryGraphic: {
-    width: 70,
-    height: 70,
-    borderRadius: 16,
-    backgroundColor: "rgba(255,255,255,0.15)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  summaryGraphicText: { fontSize: 32, color: "white", fontWeight: "bold" },
-  whiteBodyContainer: {
-    flex: 1,
-    backgroundColor: THEME.bg,
+
+  /* 4. Quick Actions Hierarchy Styles */
+  actionSectionContainer: {
     paddingHorizontal: 24,
   },
-  wideActionCard: {
+  sectionHeaderTitle: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: THEME.textMuted,
+    textTransform: "uppercase",
+    letterSpacing: 1.2,
+    marginBottom: 12,
+  },
+  primaryActionCard: {
     backgroundColor: THEME.surface,
-    width: "100%",
-    borderRadius: 16,
+    borderRadius: 22,
     padding: 20,
-    flexDirection: "row",
-    alignItems: "center",
     borderWidth: 1,
     borderColor: THEME.border,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.04,
+    shadowOpacity: 0.03,
     shadowRadius: 10,
     elevation: 3,
   },
-  wideActionIconWrapper: {
+  primaryActionTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 14,
+  },
+  primaryIconBox: {
     width: 48,
     height: 48,
-    borderRadius: 12,
+    borderRadius: 14,
     backgroundColor: THEME.primaryLight,
     justifyContent: "center",
     alignItems: "center",
   },
-  wideActionTextGroup: { flex: 1, marginLeft: 16 },
-  wideActionTitle: {
-    fontSize: 16,
+  primaryActionContent: {
+    marginTop: 2,
+  },
+  primaryActionTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: THEME.textHeader,
+    marginBottom: 4,
+  },
+  primaryActionSub: {
+    fontSize: 13,
+    color: THEME.textMuted,
+    fontWeight: "500",
+    lineHeight: 18,
+  },
+  secondaryActionCard: {
+    backgroundColor: THEME.surface,
+    borderRadius: 18,
+    padding: 16,
+    marginTop: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: THEME.border,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.02,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  secondaryLeftGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  secondaryIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "#FEF3C7",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 14,
+  },
+  secondaryTextGroup: {
+    flex: 1,
+  },
+  secondaryActionTitle: {
+    fontSize: 15,
     fontWeight: "700",
     color: THEME.textHeader,
     marginBottom: 2,
   },
-  wideActionSub: { fontSize: 12, color: THEME.textMuted, fontWeight: "500" },
-  wideActionArrowBg: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
-    backgroundColor: THEME.iconBg,
-    justifyContent: "center",
-    alignItems: "center",
+  secondaryActionSub: {
+    fontSize: 12,
+    color: THEME.textMuted,
+    fontWeight: "500",
   },
+
+  /* Standard Component Styles */
   scrollContent: { paddingHorizontal: 24, paddingBottom: 40 },
   topHeaderRow: {
     flexDirection: "row",
@@ -1497,7 +1582,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
   },
-  singleActionContainer: { paddingTop: 20, marginBottom: 15 },
   modernHeader: {
     flexDirection: "row",
     justifyContent: "space-between",

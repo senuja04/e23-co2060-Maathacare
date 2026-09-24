@@ -1,29 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context"; // 🟢 Updated to safe-area-context
+import { useTranslation } from "react-i18next";
+import { Ionicons } from "@expo/vector-icons";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { API_BASE_URL } from "../constants/apiConfig";
-
-// 🟢 Helper to decode JWT without extra libraries
-const decodeToken = (token: string) => {
-  try {
-    return JSON.parse(atob(token.split('.')[1]));
-  } catch (e) {
-    return null;
-  }
-};
 
 export default function StaffLogin() {
   const router = useRouter();
@@ -31,6 +24,7 @@ export default function StaffLogin() {
 
   const [staffId, setStaffId] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -58,15 +52,8 @@ export default function StaffLogin() {
       }
 
       const data = await response.json();
-      
-      // 🟢 Extract userId from the token payload (the 'sub' field)
-      const decoded = decodeToken(data.token);
-      const userId = decoded?.sub || ""; 
-
       await AsyncStorage.setItem("userToken", data.token);
       await AsyncStorage.setItem("userRole", data.role);
-      await AsyncStorage.setItem("userId", userId.toString()); // 🟢 Now uses extracted ID
-
       router.replace("/phm/phm_dashboard");
     } catch (error) {
       setErrorMessage("Network Error: Could not connect to the server.");
@@ -77,76 +64,265 @@ export default function StaffLogin() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LanguageSwitcher color="#0056b3" />
-
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.innerContainer}
+        style={{ flex: 1 }}
       >
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <Text style={styles.backText}>{t('backToGateway')}</Text>
-        </TouchableOpacity>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Top Header Navigation */}
+          <View style={styles.topBar}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => router.back()}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.backText}>
+                {t("backToGateway") || "← Back to Gateway"}
+              </Text>
+            </TouchableOpacity>
 
-        <View style={styles.header}>
-          <Text style={styles.title}>{t('staffPortal')}</Text>
-          <Text style={styles.subtitle}>{t('secureAccess')}</Text>
-        </View>
-
-        {errorMessage ? (
-          <View style={styles.errorBox}>
-            <Text style={styles.errorText}>{errorMessage}</Text>
+            {/* Positioned at Top Right Corner */}
+            <View style={styles.languageSwitcherWrapper}>
+              <LanguageSwitcher color="#3A75C4" />
+            </View>
           </View>
-        ) : null}
 
-        <View style={styles.form}>
-          <Text style={styles.label}>{t('staffId')}</Text>
-          <TextInput
-            style={styles.input}
-            placeholder={t('placeholderStaffId')}
-            value={staffId}
-            onChangeText={setStaffId}
-            autoCapitalize="none"
-          />
+          {/* Center Shield Icon */}
+          <View style={styles.iconContainer}>
+            <Ionicons name="shield-checkmark-outline" size={54} color="#3A75C4" />
+          </View>
 
-          <Text style={styles.label}>{t('password')}</Text>
-          <TextInput
-            style={styles.input}
-            placeholder={t('staffplaceholderPassword')}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
+          {/* Title Header */}
+          <Text style={styles.title}>{t("staffPortal") || "Staff Portal"}</Text>
+          <Text style={styles.subtitle}>
+            {t("secureAccess") || "Secure access for Medical Personnel"}
+          </Text>
 
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={handleLogin}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <ActivityIndicator color="#ffffff" />
-            ) : (
-              <Text style={styles.loginButtonText}>{t('loginToDashboard')}</Text>
-            )}
-          </TouchableOpacity>
-        </View>
+          {/* Error Message Box */}
+          {errorMessage ? (
+            <View style={styles.errorBox}>
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            </View>
+          ) : null}
+
+          {/* Form */}
+          <View style={styles.formContainer}>
+            {/* Staff ID Input */}
+            <Text style={styles.label}>{t("staffId") || "Staff ID"}</Text>
+            <View style={styles.inputCard}>
+              <Ionicons
+                name="card-outline"
+                size={20}
+                color="#6B8CB3"
+                style={styles.inputIconLeft}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder={t("placeholderStaffId") || "e.g., PHM-100"}
+                placeholderTextColor="#9EB2CE"
+                value={staffId}
+                onChangeText={setStaffId}
+                autoCapitalize="characters"
+              />
+            </View>
+
+            {/* Password Input with Eye Icon Toggle */}
+            <Text style={styles.label}>{t("password") || "Password"}</Text>
+            <View style={styles.inputCard}>
+              <Ionicons
+                name="lock-closed-outline"
+                size={20}
+                color="#6B8CB3"
+                style={styles.inputIconLeft}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder={t("staffplaceholderPassword") || "••••••••"}
+                placeholderTextColor="#9EB2CE"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Ionicons
+                  name={showPassword ? "eye-outline" : "eye-off-outline"}
+                  size={20}
+                  color="#4A7BB0"
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/* Submit Button */}
+            <TouchableOpacity
+              style={[styles.loginButton, isLoading && styles.buttonDisabled]}
+              onPress={handleLogin}
+              activeOpacity={0.85}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="#FFFFFF" />
+              ) : (
+                <Text style={styles.loginButtonText}>
+                  {t("loginToDashboard") || "Login to Dashboard"}
+                </Text>
+              )}
+            </TouchableOpacity>
+
+            {/* Footer Disclaimer */}
+            <Text style={styles.disclaimerText}>
+              For authorized personnel only. By logging in, you agree to the terms of use.
+            </Text>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F4F7FB" },
-  innerContainer: { flex: 1, padding: 25, justifyContent: "center" },
-  backButton: { position: "absolute", top: 60, left: 20, zIndex: 10 },
-  backText: { color: "#0056b3", fontSize: 16, fontWeight: "600" },
-  header: { marginBottom: 40 },
-  title: { fontSize: 36, fontWeight: "bold", color: "#0056b3", marginBottom: 5 },
-  subtitle: { fontSize: 16, color: "#6c757d" },
-  errorBox: { backgroundColor: "#FFD2D2", padding: 12, borderRadius: 8, marginBottom: 20 },
-  errorText: { color: "#D8000C", textAlign: "center", fontWeight: "bold" },
-  form: { width: "100%" },
-  label: { fontSize: 14, fontWeight: "600", color: "#333", marginBottom: 8, marginLeft: 4 },
-  input: { backgroundColor: "#ffffff", padding: 15, borderRadius: 12, fontSize: 16, borderWidth: 1, borderColor: "#E0E0E0", marginBottom: 20 },
-  loginButton: { backgroundColor: "#0056b3", paddingVertical: 18, borderRadius: 12, alignItems: "center" },
-  loginButtonText: { color: "#ffffff", fontSize: 18, fontWeight: "bold" },
+  container: {
+    flex: 1,
+    backgroundColor: "#EBF3FB", // Light blue background theme
+  },
+  scrollContent: {
+    flexGrow: 1,
+    alignItems: "center",
+    paddingHorizontal: 24,
+    paddingBottom: 30,
+  },
+  topBar: {
+    width: "100%",
+    minHeight: 48,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 8,
+    marginBottom: 16,
+    position: "relative",
+  },
+  backButton: {
+    paddingVertical: 6,
+    zIndex: 1,
+  },
+  backText: {
+    color: "#2C5282",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  languageSwitcherWrapper: {
+    position: "absolute",
+    right: -20,
+    top: -20,
+    zIndex: 10,
+  },
+  iconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 20,
+    backgroundColor: "#DCEBFB",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "800",
+    color: "#1B365D",
+    letterSpacing: -0.5,
+    marginBottom: 6,
+    textAlign: "center",
+  },
+  subtitle: {
+    fontSize: 15,
+    color: "#4A6B94",
+    marginBottom: 30,
+    textAlign: "center",
+  },
+  errorBox: {
+    width: "100%",
+    backgroundColor: "#FEE2E2",
+    borderWidth: 1,
+    borderColor: "#FCA5A5",
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 20,
+  },
+  errorText: {
+    color: "#B91C1C",
+    textAlign: "center",
+    fontSize: 13,
+    fontWeight: "600",
+  },
+  formContainer: {
+    width: "100%",
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#2D3748",
+    marginBottom: 8,
+    marginLeft: 2,
+  },
+  inputCard: {
+    width: "100%",
+    height: 52,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: "#CBD5E1",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 14,
+    marginBottom: 20,
+    shadowColor: "#1B365D",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  inputIconLeft: {
+    marginRight: 10,
+  },
+  input: {
+    flex: 1,
+    fontSize: 15,
+    color: "#1E293B",
+  },
+  loginButton: {
+    width: "100%",
+    height: 52,
+    backgroundColor: "#3182CE",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 8,
+    shadowColor: "#3182CE",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  buttonDisabled: {
+    opacity: 0.65,
+  },
+  loginButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  disclaimerText: {
+    marginTop: 24,
+    fontSize: 13,
+    color: "#64748B",
+    textAlign: "center",
+    lineHeight: 18,
+    paddingHorizontal: 10,
+  },
 });

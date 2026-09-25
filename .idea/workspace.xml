@@ -8,14 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b49cef77-4569-4145-8cfe-db880e7efb99" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/(tabs)/explore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/(tabs)/explore.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/week/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/week/[id].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/locales/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/locales/en.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/locales/i18n.ts" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/locales/i18n.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/locales/si.json" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/locales/si.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/locales/ta.json" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/locales/ta.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/(tabs)/digitalLocker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/app/(tabs)/digitalLocker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/assets/images/logo.jpeg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +28,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="push-notifications" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MavenImportPreferences">
@@ -48,23 +48,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.000132676477345" />
-      <entry key="MS500" value="1.250010648684864" />
-      <entry key="S2" value="4.745998408782276" />
-      <entry key="S5" value="13.498810973861925" />
-      <entry key="S10" value="25.227816901267452" />
-      <entry key="S30" value="44.844763682163276" />
-      <entry key="S60" value="53.22605903013769" />
-      <entry key="M2" value="58.26671738038934" />
-      <entry key="M5" value="61.76052370242123" />
-      <entry key="M10" value="65.50739621233129" />
-      <entry key="M15" value="70.4731360741327" />
-      <entry key="M30" value="83.20088717461732" />
-      <entry key="H1" value="96.01707086999883" />
-      <entry key="H2" value="105.2173667987936" />
-      <entry key="H4" value="110.74762758531796" />
-      <entry key="D1" value="116.87266883037417" />
-      <entry key="W1" value="119.39494462271355" />
+      <entry key="MS100" value="1.1409683376737587" />
+      <entry key="MS500" value="2.7146010572381876" />
+      <entry key="S2" value="5.703157935327429" />
+      <entry key="S5" value="11.824904017052312" />
+      <entry key="S10" value="22.957745937326195" />
+      <entry key="S30" value="46.37656010433538" />
+      <entry key="S60" value="57.649407032448394" />
+      <entry key="M2" value="64.71951149564372" />
+      <entry key="M5" value="69.6695568780861" />
+      <entry key="M10" value="73.92772433937805" />
+      <entry key="M15" value="79.05792594502324" />
+      <entry key="M30" value="91.9567731007892" />
+      <entry key="H1" value="104.87668040754457" />
+      <entry key="H2" value="114.14059485975422" />
+      <entry key="H4" value="119.70726531369077" />
+      <entry key="D1" value="125.8655771826947" />
+      <entry key="W1" value="128.39391011338807" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -86,24 +86,28 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.8951421851164348" />
-      <entry key="MS500" value="1.2222298779144427" />
-      <entry key="S2" value="4.720317909999708" />
-      <entry key="S5" value="13.469493217080213" />
-      <entry key="S10" value="25.1991278660074" />
-      <entry key="S30" value="44.826408892406924" />
-      <entry key="S60" value="53.21486923566559" />
-      <entry key="M2" value="58.26050261700147" />
-      <entry key="M5" value="61.75786325656204" />
-      <entry key="M10" value="65.50596689544406" />
-      <entry key="M15" value="70.4720930441786" />
-      <entry key="M30" value="83.20024858611818" />
-      <entry key="H1" value="96.01669215558344" />
-      <entry key="H2" value="105.21715602816847" />
-      <entry key="H4" value="110.74751571465906" />
-      <entry key="D1" value="116.87264726891394" />
-      <entry key="W1" value="119.39494106881897" />
+      <entry key="MS100" value="1.0242079185903121" />
+      <entry key="MS500" value="2.6596586708807837" />
+      <entry key="S2" value="5.664004684035264" />
+      <entry key="S5" value="11.782299672351932" />
+      <entry key="S10" value="22.917857037836782" />
+      <entry key="S30" value="46.35133547607324" />
+      <entry key="S60" value="57.63392513222964" />
+      <entry key="M2" value="64.71086426730953" />
+      <entry key="M5" value="69.66584271339747" />
+      <entry key="M10" value="73.92575408523875" />
+      <entry key="M15" value="79.05651928114837" />
+      <entry key="M30" value="91.95595113490698" />
+      <entry key="H1" value="104.87620953142508" />
+      <entry key="H2" value="114.14033786283278" />
+      <entry key="H4" value="119.70713028818702" />
+      <entry key="D1" value="125.86555175583206" />
+      <entry key="W1" value="128.39390600711837" />
     </decayedShown>
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/code/Frontend/MaathaCare-Frontend/package.json" />
+    <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -130,7 +134,7 @@
     "Spring Boot.BackendApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "Merging feature/testing2-branch",
+    "git-widget-placeholder": "UI-Editing",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",

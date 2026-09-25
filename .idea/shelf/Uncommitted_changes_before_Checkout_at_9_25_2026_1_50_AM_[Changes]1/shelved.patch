@@ -1,0 +1,19 @@
+Index: code/Frontend/MaathaCare-Frontend/package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\r\n  \"name\": \"maathacare-frontend\",\r\n  \"main\": \"expo-router/entry\",\r\n  \"version\": \"1.0.0\",\r\n  \"scripts\": {\r\n    \"start\": \"expo start\",\r\n    \"reset-project\": \"node ./scripts/reset-project.js\",\r\n    \"android\": \"expo run:android\",\r\n    \"ios\": \"expo run:ios\",\r\n    \"web\": \"expo start --web\",\r\n    \"lint\": \"expo lint\"\r\n  },\r\n  \"dependencies\": {\r\n    \"@expo/vector-icons\": \"^15.0.3\",\r\n    \"@react-native-async-storage/async-storage\": \"^2.2.0\",\r\n    \"@react-native-community/datetimepicker\": \"8.4.4\",\r\n    \"@react-native-picker/picker\": \"2.11.1\",\r\n    \"@react-navigation/bottom-tabs\": \"^7.4.0\",\r\n    \"@react-navigation/elements\": \"^2.6.3\",\r\n    \"@react-navigation/native\": \"^7.1.8\",\r\n    \"axios\": \"^1.13.6\",\r\n    \"base64-arraybuffer\": \"^1.0.2\",\r\n    \"expo\": \"~54.0.36\",\r\n    \"expo-build-properties\": \"~1.0.10\",\r\n    \"expo-constants\": \"~18.0.13\",\r\n    \"expo-dev-client\": \"~6.0.21\",\r\n    \"expo-device\": \"~8.0.10\",\r\n    \"expo-document-picker\": \"~14.0.8\",\r\n    \"expo-file-system\": \"~19.0.23\",\r\n    \"expo-font\": \"~14.0.11\",\r\n    \"expo-haptics\": \"~15.0.8\",\r\n    \"expo-image\": \"~3.0.11\",\r\n    \"expo-image-picker\": \"~17.0.11\",\r\n    \"expo-linear-gradient\": \"~15.0.8\",\r\n    \"expo-linking\": \"~8.0.12\",\r\n    \"expo-localization\": \"~17.0.9\",\r\n    \"expo-media-library\": \"~18.2.1\",\r\n    \"expo-notifications\": \"~0.32.17\",\r\n    \"expo-router\": \"~6.0.23\",\r\n    \"expo-secure-store\": \"~15.0.8\",\r\n    \"expo-splash-screen\": \"~31.0.13\",\r\n    \"expo-status-bar\": \"~3.0.9\",\r\n    \"expo-symbols\": \"~1.0.8\",\r\n    \"expo-system-ui\": \"~6.0.9\",\r\n    \"expo-video\": \"~3.0.16\",\r\n    \"expo-web-browser\": \"~15.0.11\",\r\n    \"i18next\": \"^26.3.4\",\r\n    \"jwt-decode\": \"^4.0.0\",\r\n    \"lucide-react-native\": \"^1.14.0\",\r\n    \"react\": \"19.1.0\",\r\n    \"react-dom\": \"19.1.0\",\r\n    \"react-i18next\": \"^17.0.8\",\r\n    \"react-native\": \"0.81.5\",\r\n    \"react-native-calendars\": \"^1.1314.0\",\r\n    \"react-native-chart-kit\": \"^7.0.1\",\r\n    \"react-native-dropdown-picker\": \"^5.4.6\",\r\n    \"react-native-gesture-handler\": \"~2.28.0\",\r\n    \"react-native-picker-select\": \"^9.3.1\",\r\n    \"react-native-reanimated\": \"~4.1.1\",\r\n    \"react-native-safe-area-context\": \"~5.6.0\",\r\n    \"react-native-screens\": \"~4.16.0\",\r\n    \"react-native-svg\": \"15.12.1\",\r\n    \"react-native-web\": \"^0.21.0\",\r\n    \"react-native-worklets\": \"0.5.1\"\r\n  },\r\n  \"devDependencies\": {\r\n    \"@types/react\": \"~19.1.10\",\r\n    \"eslint\": \"^9.25.0\",\r\n    \"eslint-config-expo\": \"~10.0.0\",\r\n    \"typescript\": \"~5.9.2\"\r\n  },\r\n  \"private\": true\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/code/Frontend/MaathaCare-Frontend/package.json b/code/Frontend/MaathaCare-Frontend/package.json
+--- a/code/Frontend/MaathaCare-Frontend/package.json	(revision ad04b0d30349561c3314d59d52e2dc78de6bcc59)
++++ b/code/Frontend/MaathaCare-Frontend/package.json	(date 1790275982026)
+@@ -11,6 +11,8 @@
+     "lint": "expo lint"
+   },
+   "dependencies": {
++    "@expo-google-fonts/manrope": "^0.4.2",
++    "@expo-google-fonts/playfair-display": "^0.4.2",
+     "@expo/vector-icons": "^15.0.3",
+     "@react-native-async-storage/async-storage": "^2.2.0",
+     "@react-native-community/datetimepicker": "8.4.4",

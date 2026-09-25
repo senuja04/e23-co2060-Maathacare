@@ -1,12 +1,14 @@
 package com.Maathacare.Backend.controller;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,29 +59,187 @@ public class UserController {
     // ----------------------------------------------------
 
     @PostMapping("/register")
+    @Transactional
     public ResponseEntity<?> register(
             @RequestBody UserRegistrationRequest request
     ) {
+
         try {
+
+            // ------------------------------------------------
+            // BASIC REQUEST VALIDATION
+            // ------------------------------------------------
+
+            if (request == null) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("Registration request is missing.");
+            }
+
+            String phoneNumber =
+                    request.getPhoneNumber() == null
+                            ? ""
+                            : request.getPhoneNumber().trim();
+
+            String password =
+                    request.getPassword() == null
+                            ? ""
+                            : request.getPassword().trim();
+
+            String fullName =
+                    request.getFullName() == null
+                            ? ""
+                            : request.getFullName().trim();
+
+            String nic =
+                    request.getNic() == null
+                            ? ""
+                            : request.getNic().trim();
+
+            String address =
+                    request.getAddress() == null
+                            ? ""
+                            : request.getAddress().trim();
+
+            String emergencyContact =
+                    request.getEmergencyContactNumber() == null
+                            ? ""
+                            : request
+                            .getEmergencyContactNumber()
+                            .trim();
+
+            String district =
+                    request.getDistrict() == null
+                            ? ""
+                            : request.getDistrict().trim();
+
+            String province =
+                    request.getProvince() == null
+                            ? ""
+                            : request.getProvince().trim();
+
+            String residentialDivision =
+                    request.getResidentialDivision() == null
+                            ? ""
+                            : request
+                            .getResidentialDivision()
+                            .trim();
+
+            String gnDivision =
+                    request.getGnDivision() == null
+                            ? ""
+                            : request.getGnDivision().trim();
+
+            // ------------------------------------------------
+            // REQUIRED FIELDS
+            // ------------------------------------------------
+
+            if (phoneNumber.isEmpty()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("Phone number is required.");
+            }
+
+            if (password.isEmpty()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("Password is required.");
+            }
+
+            if (fullName.isEmpty()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("Full name is required.");
+            }
+
+            if (nic.isEmpty()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("NIC is required.");
+            }
+
+            if (address.isEmpty()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("Address is required.");
+            }
+
+            if (emergencyContact.isEmpty()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("Emergency contact number is required.");
+            }
+
+            if (request.getBloodGroup() == null
+                    || request.getBloodGroup().trim().isEmpty()) {
+
+                return ResponseEntity
+                        .badRequest()
+                        .body("Blood group is required.");
+            }
+
+            if (province.isEmpty()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("Province is required.");
+            }
+
+            if (district.isEmpty()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("District is required.");
+            }
+
+            if (residentialDivision.isEmpty()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("MOH Area is required.");
+            }
+
+            if (gnDivision.isEmpty()) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("GN Division is required.");
+            }
+
+            // ------------------------------------------------
+            // PHONE FORMAT
+            // ------------------------------------------------
+
+            if (!phoneNumber.matches("^0\\d{9}$")) {
+                return ResponseEntity
+                        .badRequest()
+                        .body(
+                                "Phone number must contain "
+                                        + "10 digits and begin with 0."
+                        );
+            }
+
+            // ------------------------------------------------
+            // CHECK EXISTING PHONE NUMBER
+            // ------------------------------------------------
+
             if (userRepository
-                    .findById(request.getPhoneNumber())
+                    .findById(phoneNumber)
                     .isPresent()) {
 
                 return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body("Phone number already registered.");
+                        .status(HttpStatus.CONFLICT)
+                        .body(
+                                "Phone number already registered."
+                        );
             }
+
+            // ------------------------------------------------
+            // CREATE USER ACCOUNT
+            // ------------------------------------------------
 
             User newUser = new User();
 
-            newUser.setUserId(
-                    request.getPhoneNumber().trim()
-            );
+            newUser.setUserId(phoneNumber);
 
             newUser.setPasswordHash(
-                    passwordEncoder.encode(
-                            request.getPassword()
-                    )
+                    passwordEncoder.encode(password)
             );
 
             newUser.setRole(Role.MOTHER);
@@ -88,64 +248,129 @@ public class UserController {
             User savedUser =
                     userRepository.save(newUser);
 
+            // ------------------------------------------------
+            // CREATE MOTHER PROFILE
+            // ------------------------------------------------
+
             MotherProfile profile =
                     new MotherProfile();
 
             profile.setUser(savedUser);
-            profile.setFullName(request.getFullName());
-            profile.setNic(request.getNic());
-            profile.setDateOfBirth(request.getDateOfBirth());
-            profile.setAddress(request.getAddress());
+
+            profile.setFullName(fullName);
+
+            profile.setNic(nic);
+
+            profile.setDateOfBirth(
+                    request.getDateOfBirth()
+            );
+
+            profile.setAddress(address);
 
             profile.setEmergencyContactNumber(
-                    request.getEmergencyContactNumber()
+                    emergencyContact
             );
 
             profile.setBloodGroup(
-                    request.getBloodGroup()
+                    request.getBloodGroup().trim()
             );
 
             profile.setLastMenstrualPeriod(
                     request.getLastMenstrualPeriod()
             );
 
-            profile.setDistrict(
-                    request.getDistrict()
-            );
+            profile.setDistrict(district);
 
-            profile.setProvince(
-                    request.getProvince()
-            );
+            profile.setProvince(province);
 
             profile.setResidentialDivision(
-                    request.getResidentialDivision()
+                    residentialDivision
             );
 
             profile.setGnDivision(
-                    request.getGnDivision()
+                    gnDivision
             );
 
-            if (
-                    request.getGnDivision() != null
-                            && !request
-                            .getGnDivision()
-                            .trim()
-                            .isEmpty()
-            ) {
-                Optional<PHMProfile> assignedPhm =
-                        phmProfileRepository
-                                .findByGnDivision(
-                                        request
-                                                .getGnDivision()
-                                                .trim()
-                                );
+            // ------------------------------------------------
+            // PHM ASSIGNMENT
+            // ------------------------------------------------
+            //
+            // IMPORTANT:
+            //
+            // A GN Division may contain more than one PHM.
+            //
+            // The old code used:
+            //
+            // Optional<PHMProfile> findByGnDivision(...)
+            //
+            // which crashes if more than one PHM exists.
+            //
+            // We now retrieve ALL matching PHMs.
+            // ------------------------------------------------
 
-                assignedPhm.ifPresent(
-                        profile::setPhmProfile
+            List<PHMProfile> matchingPhms =
+                    phmProfileRepository
+                            .findAllByGnDivision(
+                                    gnDivision
+                            );
+
+            if (!matchingPhms.isEmpty()) {
+
+                /*
+                 * Temporary assignment policy:
+                 *
+                 * If multiple PHMs serve the same GN Division,
+                 * assign the first available PHM returned by
+                 * the repository.
+                 *
+                 * This prevents registration from failing.
+                 *
+                 * Later this can be replaced with:
+                 * - workload balancing
+                 * - explicit PHM selection
+                 * - catchment/sub-area assignment
+                 */
+                PHMProfile assignedPhm =
+                        matchingPhms.get(0);
+
+                profile.setPhmProfile(
+                        assignedPhm
+                );
+
+                System.out.println(
+                        "Mother assigned to PHM: "
+                                + assignedPhm
+                                .getUser()
+                                .getStaffId()
+                                + " | GN Division: "
+                                + gnDivision
+                );
+
+            } else {
+
+                /*
+                 * Mother registration is still allowed
+                 * even when no PHM is currently registered
+                 * for the GN Division.
+                 */
+
+                System.out.println(
+                        "No PHM found for GN Division: "
+                                + gnDivision
+                                + ". Mother will remain "
+                                + "temporarily unassigned."
                 );
             }
 
+            // ------------------------------------------------
+            // SAVE MOTHER PROFILE
+            // ------------------------------------------------
+
             motherProfileRepository.save(profile);
+
+            // ------------------------------------------------
+            // SUCCESS
+            // ------------------------------------------------
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
@@ -154,6 +379,17 @@ public class UserController {
                     );
 
         } catch (Exception e) {
+
+            /*
+             * Because the User is saved before the MotherProfile,
+             * any unexpected failure must roll back the entire
+             * registration transaction.
+             */
+
+            TransactionAspectSupport
+                    .currentTransactionStatus()
+                    .setRollbackOnly();
+
             e.printStackTrace();
 
             return ResponseEntity
@@ -174,7 +410,9 @@ public class UserController {
     public ResponseEntity<?> login(
             @RequestBody Map<String, String> requestData
     ) {
+
         try {
+
             String phone =
                     requestData
                             .get("phoneNumber")
@@ -191,9 +429,12 @@ public class UserController {
             );
 
         } catch (RuntimeException e) {
+
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(e.getMessage());
+                    .body(
+                            e.getMessage()
+                    );
         }
     }
 
@@ -205,16 +446,20 @@ public class UserController {
     public ResponseEntity<?> staffLogin(
             @RequestBody AuthRequest request
     ) {
+
         if (
                 request == null
                         || request.getStaffId() == null
-                        || request.getStaffId()
+                        || request
+                        .getStaffId()
                         .trim()
                         .isEmpty()
                         || request.getPassword() == null
-                        || request.getPassword()
+                        || request
+                        .getPassword()
                         .isEmpty()
         ) {
+
             return ResponseEntity
                     .badRequest()
                     .body(
@@ -223,7 +468,9 @@ public class UserController {
         }
 
         String staffId =
-                request.getStaffId().trim();
+                request
+                        .getStaffId()
+                        .trim();
 
         User user =
                 userRepository
@@ -231,18 +478,27 @@ public class UserController {
                         .orElse(null);
 
         if (user == null) {
+
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body("Staff ID not found.");
+                    .body(
+                            "Staff ID not found."
+                    );
         }
 
         if (user.getRole() == Role.MOTHER) {
+
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body("Access denied.");
+                    .body(
+                            "Access denied."
+                    );
         }
 
-        if (Boolean.FALSE.equals(user.getActive())) {
+        if (Boolean.FALSE.equals(
+                user.getActive()
+        )) {
+
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .body(
@@ -256,9 +512,12 @@ public class UserController {
                         user.getPasswordHash()
                 )
         ) {
+
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body("Invalid credentials.");
+                    .body(
+                            "Invalid credentials."
+                    );
         }
 
         return ResponseEntity.ok(
@@ -274,30 +533,50 @@ public class UserController {
     // ----------------------------------------------------
 
     @GetMapping("/admin/setup")
-    public ResponseEntity<String> setupMasterAdmin() {
+    public ResponseEntity<String>
+    setupMasterAdmin() {
+
         if (
                 userRepository
-                        .findByStaffId("ADMIN-MASTER")
+                        .findByStaffId(
+                                "ADMIN-MASTER"
+                        )
                         .isPresent()
         ) {
+
             return ResponseEntity.ok(
                     "Master Admin already exists!"
             );
         }
 
-        User admin = new User();
+        User admin =
+                new User();
 
-        admin.setUserId("ADMIN-MASTER");
-        admin.setStaffId("ADMIN-MASTER");
-
-        admin.setPasswordHash(
-                passwordEncoder.encode("admin123")
+        admin.setUserId(
+                "ADMIN-MASTER"
         );
 
-        admin.setRole(Role.ADMIN);
-        admin.setActive(true);
+        admin.setStaffId(
+                "ADMIN-MASTER"
+        );
 
-        userRepository.save(admin);
+        admin.setPasswordHash(
+                passwordEncoder.encode(
+                        "admin123"
+                )
+        );
+
+        admin.setRole(
+                Role.ADMIN
+        );
+
+        admin.setActive(
+                true
+        );
+
+        userRepository.save(
+                admin
+        );
 
         return ResponseEntity.ok(
                 "Master Admin Created! "
@@ -307,21 +586,32 @@ public class UserController {
     }
 
     @GetMapping("/staff/create-test")
-    public ResponseEntity<String> createTestStaff() {
+    public ResponseEntity<String>
+    createTestStaff() {
+
         if (
                 userRepository
-                        .findByStaffId("PHM-100")
+                        .findByStaffId(
+                                "PHM-100"
+                        )
                         .isPresent()
         ) {
+
             return ResponseEntity.ok(
                     "Test Midwife already exists!"
             );
         }
 
-        User testStaff = new User();
+        User testStaff =
+                new User();
 
-        testStaff.setUserId("999999999V");
-        testStaff.setStaffId("PHM-100");
+        testStaff.setUserId(
+                "999999999V"
+        );
+
+        testStaff.setStaffId(
+                "PHM-100"
+        );
 
         testStaff.setPasswordHash(
                 passwordEncoder.encode(
@@ -329,26 +619,45 @@ public class UserController {
                 )
         );
 
-        testStaff.setRole(Role.PHM);
-        testStaff.setActive(true);
+        testStaff.setRole(
+                Role.PHM
+        );
+
+        testStaff.setActive(
+                true
+        );
 
         User savedUser =
-                userRepository.save(testStaff);
+                userRepository.save(
+                        testStaff
+                );
 
         PHMProfile profile =
                 new PHMProfile();
 
-        profile.setUser(savedUser);
-        profile.setFullName("Test Midwife");
+        profile.setUser(
+                savedUser
+        );
+
+        profile.setFullName(
+                "Test Midwife"
+        );
 
         profile.setRegistrationNumber(
                 "PHM-100"
         );
 
-        profile.setMohArea("Colombo MC");
-        profile.setGnDivision("Borella North");
+        profile.setMohArea(
+                "Colombo MC"
+        );
 
-        phmProfileRepository.save(profile);
+        profile.setGnDivision(
+                "Borella North"
+        );
+
+        phmProfileRepository.save(
+                profile
+        );
 
         return ResponseEntity.ok(
                 "Test Midwife and Profile Created! "
@@ -366,29 +675,47 @@ public class UserController {
     public ResponseEntity<?> changePassword(
             @RequestBody Map<String, String> request
     ) {
+
         try {
+
             String userId =
-                    request.get("userId");
+                    request.get(
+                            "userId"
+                    );
 
             String oldPassword =
-                    request.get("oldPassword");
+                    request.get(
+                            "oldPassword"
+                    );
 
             String newPassword =
-                    request.get("newPassword");
+                    request.get(
+                            "newPassword"
+                    );
 
             User user =
                     userRepository
-                            .findByUserId(userId)
+                            .findByUserId(
+                                    userId
+                            )
                             .orElseGet(
-                                    () -> userRepository
-                                            .findByStaffId(userId)
-                                            .orElse(null)
+                                    () ->
+                                            userRepository
+                                                    .findByStaffId(
+                                                            userId
+                                                    )
+                                                    .orElse(null)
                             );
 
             if (user == null) {
+
                 return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body("User not found.");
+                        .status(
+                                HttpStatus.NOT_FOUND
+                        )
+                        .body(
+                                "User not found."
+                        );
             }
 
             if (
@@ -397,8 +724,11 @@ public class UserController {
                             user.getPasswordHash()
                     )
             ) {
+
                 return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
+                        .status(
+                                HttpStatus.BAD_REQUEST
+                        )
                         .body(
                                 "Incorrect current password."
                         );
@@ -410,13 +740,16 @@ public class UserController {
                     )
             );
 
-            userRepository.save(user);
+            userRepository.save(
+                    user
+            );
 
             return ResponseEntity.ok(
                     "Password successfully updated!"
             );
 
         } catch (Exception e) {
+
             e.printStackTrace();
 
             return ResponseEntity
@@ -439,14 +772,19 @@ public class UserController {
             @PathVariable String userId,
             @RequestBody Map<String, String> request
     ) {
+
         try {
+
             String pushToken =
-                    request.get("pushToken");
+                    request.get(
+                            "pushToken"
+                    );
 
             if (
                     pushToken == null
                             || pushToken.isBlank()
             ) {
+
                 return ResponseEntity
                         .badRequest()
                         .body(
@@ -459,11 +797,13 @@ public class UserController {
             );
 
             System.out.println(
-                    "User ID: " + userId
+                    "User ID: "
+                            + userId
             );
 
             System.out.println(
-                    "Push token: " + pushToken
+                    "Push token: "
+                            + pushToken
             );
 
             userService.updatePushToken(
@@ -476,6 +816,7 @@ public class UserController {
             );
 
         } catch (Exception e) {
+
             e.printStackTrace();
 
             return ResponseEntity

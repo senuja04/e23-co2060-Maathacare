@@ -17,21 +17,28 @@ import DropDownPicker from "react-native-dropdown-picker";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { API_BASE_URL } from "../constants/apiConfig";
 
+// =============================================================
+// PROVINCE -> DISTRICT
+// =============================================================
+
 const districtMap: Record<string, { label: string; value: string }[]> = {
   Central: [
     { label: "Kandy", value: "Kandy" },
     { label: "Matale", value: "Matale" },
     { label: "Nuwara Eliya", value: "Nuwara Eliya" },
   ],
+
   Eastern: [
     { label: "Ampara", value: "Ampara" },
     { label: "Batticaloa", value: "Batticaloa" },
     { label: "Trincomalee", value: "Trincomalee" },
   ],
+
   "North Central": [
     { label: "Anuradhapura", value: "Anuradhapura" },
     { label: "Polonnaruwa", value: "Polonnaruwa" },
   ],
+
   Northern: [
     { label: "Jaffna", value: "Jaffna" },
     { label: "Kilinochchi", value: "Kilinochchi" },
@@ -39,29 +46,38 @@ const districtMap: Record<string, { label: string; value: string }[]> = {
     { label: "Mullaitivu", value: "Mullaitivu" },
     { label: "Vavuniya", value: "Vavuniya" },
   ],
+
   "North Western": [
     { label: "Kurunegala", value: "Kurunegala" },
     { label: "Puttalam", value: "Puttalam" },
   ],
+
   Sabaragamuwa: [
     { label: "Kegalle", value: "Kegalle" },
     { label: "Ratnapura", value: "Ratnapura" },
   ],
+
   Southern: [
     { label: "Galle", value: "Galle" },
     { label: "Hambantota", value: "Hambantota" },
     { label: "Matara", value: "Matara" },
   ],
+
   Uva: [
     { label: "Badulla", value: "Badulla" },
     { label: "Monaragala", value: "Monaragala" },
   ],
+
   Western: [
     { label: "Colombo", value: "Colombo" },
     { label: "Gampaha", value: "Gampaha" },
     { label: "Kalutara", value: "Kalutara" },
   ],
 };
+
+// =============================================================
+// DISTRICT -> MOH AREA
+// =============================================================
 
 const mohAreaMap: Record<string, { label: string; value: string }[]> = {
   Colombo: [
@@ -78,6 +94,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Piliyandala", value: "Piliyandala" },
     { label: "Ratmalana", value: "Ratmalana" },
   ],
+
   Gampaha: [
     { label: "Attanagalla", value: "Attanagalla" },
     { label: "Biyagama", value: "Biyagama" },
@@ -95,6 +112,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Seeduwa", value: "Seeduwa" },
     { label: "Wattala", value: "Wattala" },
   ],
+
   Kalutara: [
     { label: "Agalawatta", value: "Agalawatta" },
     { label: "Bandaragama", value: "Bandaragama" },
@@ -110,6 +128,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Panadura", value: "Panadura" },
     { label: "Walallawita", value: "Walallawita" },
   ],
+
   Matara: [
     { label: "Akuressa", value: "Akuressa" },
     { label: "Athuraliya", value: "Athuraliya" },
@@ -130,6 +149,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Weligama", value: "Weligama" },
     { label: "Welipitiya", value: "Welipitiya" },
   ],
+
   Galle: [
     { label: "Akmeemana", value: "Akmeemana" },
     { label: "Ambalangoda", value: "Ambalangoda" },
@@ -151,6 +171,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Welivitiya Divithura", value: "Welivitiya Divithura" },
     { label: "Yakkalamulla", value: "Yakkalamulla" },
   ],
+
   Hambantota: [
     { label: "Ambalantota", value: "Ambalantota" },
     { label: "Angunakolapelessa", value: "Angunakolapelessa" },
@@ -165,6 +186,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Walasmulla", value: "Walasmulla" },
     { label: "Weeraketiya", value: "Weeraketiya" },
   ],
+
   Kandy: [
     { label: "Akurana", value: "Akurana" },
     { label: "Bambaradeniya", value: "Bambaradeniya" },
@@ -195,7 +217,9 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Udunuwara", value: "Udunuwara" },
     { label: "Yatinuwara", value: "Yatinuwara" },
   ],
+
   Matale: [],
+
   "Nuwara Eliya": [
     { label: "Ambagamuwa", value: "Ambagamuwa" },
     { label: "Bogawanthalawa", value: "Bogawanthalawa" },
@@ -212,6 +236,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Ragala", value: "Ragala" },
     { label: "Walapane", value: "Walapane" },
   ],
+
   Ampara: [
     { label: "Akkaraipattu", value: "Akkaraipattu" },
     { label: "Ampara", value: "Ampara" },
@@ -220,6 +245,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Padiyathalawa", value: "Padiyathalawa" },
     { label: "Uhana", value: "Uhana" },
   ],
+
   Batticaloa: [
     { label: "Arayampathy", value: "Arayampathy" },
     { label: "Batticaloa", value: "Batticaloa" },
@@ -233,6 +259,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Valaichenai", value: "Valaichenai" },
     { label: "Vellavely", value: "Vellavely" },
   ],
+
   Trincomalee: [
     { label: "Eachchilampatru", value: "Eachchilampatru" },
     { label: "Gomarankadawela", value: "Gomarankadawela" },
@@ -241,11 +268,13 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Kuchchaveli", value: "Kuchchaveli" },
     { label: "Kurinchakkerny", value: "Kurinchakkerny" },
   ],
+
   Anuradhapura: [
     { label: "Anuradhapura", value: "Anuradhapura" },
     { label: "Galenbindunuwewa", value: "Galenbindunuwewa" },
     { label: "Galnewa", value: "Galnewa" },
   ],
+
   Polonnaruwa: [
     { label: "Dimbulagala", value: "Dimbulagala" },
     { label: "Elahera", value: "Elahera" },
@@ -255,6 +284,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Thamankduwa", value: "Thamankduwa" },
     { label: "Welikanda", value: "Welikanda" },
   ],
+
   Jaffna: [
     { label: "Chankanai", value: "Chankanai" },
     { label: "Chavakachcheri", value: "Chavakachcheri" },
@@ -269,26 +299,31 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Tellippalai", value: "Tellippalai" },
     { label: "Uduvil", value: "Uduvil" },
   ],
+
   Kilinochchi: [
     { label: "Kandawalai", value: "Kandawalai" },
     { label: "Karachchi", value: "Karachchi" },
     { label: "Palai", value: "Palai" },
     { label: "Poonakary", value: "Poonakary" },
   ],
+
   Mannar: [
     { label: "Mannar Town", value: "Mannar Town" },
     { label: "Musalai", value: "Musalai" },
     { label: "Nanattan", value: "Nanattan" },
   ],
+
   Mullaitivu: [
     { label: "Mallavi", value: "Mallavi" },
     { label: "Mullaitivu", value: "Mullaitivu" },
   ],
+
   Vavuniya: [
     { label: "Cheddikulam", value: "Cheddikulam" },
     { label: "Vavuniya", value: "Vavuniya" },
     { label: "Vavuniya South", value: "Vavuniya South" },
   ],
+
   Kurunegala: [
     { label: "Alawwa", value: "Alawwa" },
     { label: "Galgamuwa", value: "Galgamuwa" },
@@ -300,6 +335,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Rideegama", value: "Rideegama" },
     { label: "Udubeddawa", value: "Udubeddawa" },
   ],
+
   Puttalam: [
     { label: "Anamaduwa", value: "Anamaduwa" },
     { label: "Arachchikattuwa", value: "Arachchikattuwa" },
@@ -313,6 +349,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Pallama", value: "Pallama" },
     { label: "Wennappuwa", value: "Wennappuwa" },
   ],
+
   Kegalle: [
     { label: "Aranayake", value: "Aranayake" },
     { label: "Kegalle", value: "Kegalle" },
@@ -322,12 +359,14 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Warakapola", value: "Warakapola" },
     { label: "Yatiyantota", value: "Yatiyantota" },
   ],
+
   Ratnapura: [
     { label: "Balangoda", value: "Balangoda" },
     { label: "Eheliyagoda", value: "Eheliyagoda" },
     { label: "Embilipitiya", value: "Embilipitiya" },
     { label: "Ratnapura", value: "Ratnapura" },
   ],
+
   Badulla: [
     { label: "Badulla", value: "Badulla" },
     { label: "Bandarawela", value: "Bandarawela" },
@@ -346,6 +385,7 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
     { label: "Uva Paranagama", value: "Uva Paranagama" },
     { label: "Welimada", value: "Welimada" },
   ],
+
   Monaragala: [
     { label: "Badalkumbura", value: "Badalkumbura" },
     { label: "Bibile", value: "Bibile" },
@@ -361,37 +401,81 @@ const mohAreaMap: Record<string, { label: string; value: string }[]> = {
   ],
 };
 
-const gnDivisionMap: Record<string, { label: string; value: string }[]> = {
-  "Colombo MC": [
-    { label: "Borella North", value: "Borella North" },
-    { label: "Borella South", value: "Borella South" },
-    { label: "Cinnamon Gardens", value: "Cinnamon Gardens" },
-    { label: "Dematagoda", value: "Dematagoda" },
-  ],
-  Homagama: [
-    { label: "Homagama Town", value: "Homagama Town" },
-    { label: "Pitipana", value: "Pitipana" },
-    { label: "Katuwana", value: "Katuwana" },
-  ],
-  Default: [
-    { label: "GN Division 1", value: "GN 1" },
-    { label: "GN Division 2", value: "GN 2" },
-  ],
+// =============================================================
+// HELPERS
+// =============================================================
+
+const formatLocalDate = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 };
+
+const getBackendMessage = (data: any): string => {
+  if (!data) {
+    return "The server rejected the registration request.";
+  }
+
+  if (typeof data === "string") {
+    return data;
+  }
+
+  if (typeof data.message === "string") {
+    return data.message;
+  }
+
+  if (typeof data.error === "string") {
+    return data.error;
+  }
+
+  if (Array.isArray(data.errors)) {
+    return data.errors
+      .map((item: any) =>
+        typeof item === "string"
+          ? item
+          : item?.message || JSON.stringify(item),
+      )
+      .join("\n");
+  }
+
+  try {
+    return JSON.stringify(data);
+  } catch {
+    return "The server rejected the registration request.";
+  }
+};
+
+// =============================================================
+// COMPONENT
+// =============================================================
 
 export default function Register() {
   const router = useRouter();
   const { t } = useTranslation();
+
+  // ===========================================================
+  // BASIC ACCOUNT DETAILS
+  // ===========================================================
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // ===========================================================
+  // PERSONAL DETAILS
+  // ===========================================================
+
   const [fullName, setFullName] = useState("");
   const [nic, setNic] = useState("");
   const [address, setAddress] = useState("");
   const [emergencyContactNumber, setEmergencyContactNumber] = useState("");
+
+  // ===========================================================
+  // DATES
+  // ===========================================================
 
   const [dob, setDob] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -399,8 +483,13 @@ export default function Register() {
   const [lmp, setLmp] = useState(new Date());
   const [showLmpPicker, setShowLmpPicker] = useState(false);
 
+  // ===========================================================
+  // BLOOD GROUP
+  // ===========================================================
+
   const [bloodGroupOpen, setBloodGroupOpen] = useState(false);
   const [bloodGroup, setBloodGroup] = useState<string | null>(null);
+
   const [bloodGroupItems, setBloodGroupItems] = useState([
     { label: "A+", value: "A+" },
     { label: "A-", value: "A-" },
@@ -412,151 +501,349 @@ export default function Register() {
     { label: "AB-", value: "AB-" },
   ]);
 
+  // ===========================================================
+  // PROVINCE
+  // ===========================================================
+
   const [provinceOpen, setProvinceOpen] = useState(false);
   const [province, setProvince] = useState<string | null>(null);
+
   const [provinceItems, setProvinceItems] = useState(
-    Object.keys(districtMap).map((prov) => ({ label: prov, value: prov })),
+    Object.keys(districtMap).map((prov) => ({
+      label: prov,
+      value: prov,
+    })),
   );
+
+  // ===========================================================
+  // DISTRICT
+  // ===========================================================
 
   const [districtOpen, setDistrictOpen] = useState(false);
   const [district, setDistrict] = useState<string | null>(null);
+
   const [districtItems, setDistrictItems] = useState<
     { label: string; value: string }[]
   >([]);
 
+  // ===========================================================
+  // MOH AREA
+  // ===========================================================
+
   const [divisionOpen, setDivisionOpen] = useState(false);
   const [division, setDivision] = useState<string | null>(null);
+
   const [divisionItems, setDivisionItems] = useState<
     { label: string; value: string }[]
   >([]);
 
-  // GN Division State Hooks
+  // ===========================================================
+  // GN DIVISION
+  // ===========================================================
+
   const [gnDivisionOpen, setGnDivisionOpen] = useState(false);
   const [gnDivision, setGnDivision] = useState<string | null>(null);
+
   const [gnDivisionItems, setGnDivisionItems] = useState<
     { label: string; value: string }[]
   >([]);
+
   const [isFetchingGn, setIsFetchingGn] = useState(false);
 
+  // ===========================================================
+  // REGISTER
+  // ===========================================================
+
   const handleRegister = async () => {
-    // Validating that GN Division is also selected
+    const cleanPhoneNumber = phoneNumber.trim();
+    const cleanPassword = password.trim();
+    const cleanConfirmPassword = confirmPassword.trim();
+    const cleanFullName = fullName.trim();
+    const cleanNic = nic.trim();
+    const cleanAddress = address.trim();
+    const cleanEmergencyContact = emergencyContactNumber.trim();
+
+    // ---------------------------------------------------------
+    // REQUIRED FIELDS
+    // ---------------------------------------------------------
+
     if (
-      !phoneNumber ||
-      !password ||
-      !fullName ||
-      !nic ||
-      !address ||
-      !emergencyContactNumber ||
+      !cleanPhoneNumber ||
+      !cleanPassword ||
+      !cleanConfirmPassword ||
+      !cleanFullName ||
+      !cleanNic ||
+      !cleanAddress ||
+      !cleanEmergencyContact ||
       !bloodGroup ||
       !district ||
       !province ||
       !division ||
       !gnDivision
     ) {
-      Alert.alert("Error", "Please fill in all fields.");
+      Alert.alert("Missing Information", "Please fill in all fields.");
       return;
     }
 
-    if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match!");
+    // ---------------------------------------------------------
+    // PHONE NUMBER
+    // ---------------------------------------------------------
+
+    if (!/^0\d{9}$/.test(cleanPhoneNumber)) {
+      Alert.alert(
+        "Invalid Phone Number",
+        "Enter a 10-digit Sri Lankan phone number, for example 0771234567.",
+      );
       return;
     }
 
-    if (nic.length !== 12) {
-      Alert.alert("Error", "NIC must be exactly 12 characters long.");
+    // ---------------------------------------------------------
+    // PASSWORD
+    // ---------------------------------------------------------
+
+    if (cleanPassword !== cleanConfirmPassword) {
+      Alert.alert("Password Error", "Passwords do not match.");
       return;
     }
+
+    // ---------------------------------------------------------
+    // NIC
+    // ---------------------------------------------------------
+
+    if (cleanNic.length !== 12) {
+      Alert.alert(
+        "Invalid NIC",
+        "NIC must be exactly 12 characters long.",
+      );
+      return;
+    }
+
+    // ---------------------------------------------------------
+    // DATE VALIDATION
+    // ---------------------------------------------------------
+
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+
+    if (dob > today) {
+      Alert.alert(
+        "Invalid Date of Birth",
+        "Date of birth cannot be in the future.",
+      );
+      return;
+    }
+
+    if (lmp > today) {
+      Alert.alert(
+        "Invalid LMP Date",
+        "Last menstrual period cannot be in the future.",
+      );
+      return;
+    }
+
+    // ---------------------------------------------------------
+    // PAYLOAD
+    // ---------------------------------------------------------
+
+    const payload = {
+      phoneNumber: cleanPhoneNumber,
+      password: cleanPassword,
+      role: "MOTHER",
+      fullName: cleanFullName,
+      nic: cleanNic,
+      address: cleanAddress,
+      emergencyContactNumber: cleanEmergencyContact,
+      bloodGroup,
+      district,
+      province,
+      residentialDivision: division,
+      gnDivision,
+      dateOfBirth: formatLocalDate(dob),
+      lastMenstrualPeriod: formatLocalDate(lmp),
+    };
+
+    console.log("REGISTER REQUEST URL:", `${API_BASE_URL}/api/users/register`);
+    console.log("REGISTER REQUEST PAYLOAD:", payload);
 
     try {
       setIsLoading(true);
 
-      const payload = {
-        phoneNumber: phoneNumber,
-        password: password,
-        role: "MOTHER",
-        fullName: fullName,
-        nic: nic,
-        address: address,
-        emergencyContactNumber: emergencyContactNumber,
-        bloodGroup: bloodGroup,
-        district: district,
-        province: province,
-        residentialDivision: division,
-        gnDivision: gnDivision, // Adding GN Division to the API Request
-        dateOfBirth: dob.toISOString().split("T")[0],
-        lastMenstrualPeriod: lmp.toISOString().split("T")[0],
-      };
-
       const response = await axios.post(
         `${API_BASE_URL}/api/users/register`,
         payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
       );
+
+      console.log("REGISTER SUCCESS STATUS:", response.status);
+      console.log("REGISTER SUCCESS RESPONSE:", response.data);
 
       Alert.alert(
         "Account Created!",
         "Welcome to MaathaCare. Please log in with your new account.",
-        [{ text: "OK", onPress: () => router.replace("/mother-login") }],
+        [
+          {
+            text: "OK",
+            onPress: () => router.replace("/mother-login"),
+          },
+        ],
       );
     } catch (error) {
       const err = error as any;
-      setIsLoading(false);
 
-      console.log("BACKEND REJECTION REASON:", err.response?.data);
+      console.error("REGISTER FAILED");
+      console.error("STATUS:", err.response?.status);
+      console.error("BACKEND RESPONSE:", err.response?.data);
+      console.error("ERROR MESSAGE:", err.message);
+
+      // -------------------------------------------------------
+      // SERVER RESPONDED
+      // -------------------------------------------------------
 
       if (err.response) {
-        Alert.alert("Server Rejected", `Error Code: ${err.response.status}`);
-      } else if (err.request) {
+        const status = err.response.status;
+        const backendMessage = getBackendMessage(err.response.data);
+
+        if (status === 400) {
+          Alert.alert("Registration Failed", backendMessage);
+          return;
+        }
+
+        if (status === 409) {
+          Alert.alert("Already Registered", backendMessage);
+          return;
+        }
+
+        if (status === 401 || status === 403) {
+          Alert.alert(
+            "Registration Not Allowed",
+            backendMessage,
+          );
+          return;
+        }
+
+        if (status >= 500) {
+          Alert.alert(
+            "Server Error",
+            backendMessage ||
+              "The server could not complete the registration.",
+          );
+          return;
+        }
+
         Alert.alert(
-          "Network Blocked",
-          "Cannot reach server. Check Wi-Fi and IP.",
+          `Registration Failed (${status})`,
+          backendMessage,
         );
-      } else {
-        Alert.alert("App Error", err.message);
+        return;
       }
+
+      // -------------------------------------------------------
+      // REQUEST SENT, NO RESPONSE
+      // -------------------------------------------------------
+
+      if (err.request) {
+        Alert.alert(
+          "Connection Failed",
+          "The app could not reach the MaathaCare server. Check your internet connection and API configuration.",
+        );
+        return;
+      }
+
+      // -------------------------------------------------------
+      // CLIENT-SIDE ERROR
+      // -------------------------------------------------------
+
+      Alert.alert(
+        "App Error",
+        err.message || "An unexpected error occurred.",
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  // ===========================================================
+  // UI
+  // ===========================================================
 
   return (
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
       nestedScrollEnabled={true}
+      keyboardShouldPersistTaps="handled"
     >
       <LanguageSwitcher />
 
       <Text style={styles.title}>{t("createAccount")}</Text>
-      <Text style={styles.subtitle}>{t("joinToday")}</Text>
 
-      <Text style={styles.label}>{t("phoneNumber")}</Text>
+      <Text style={styles.subtitle}>
+        {t("joinToday")}
+      </Text>
+
+      {/* =====================================================
+          PHONE NUMBER
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("phoneNumber")}
+      </Text>
+
       <TextInput
         style={styles.input}
         placeholder={t("placeholderPhone")}
         value={phoneNumber}
         onChangeText={setPhoneNumber}
         keyboardType="phone-pad"
+        maxLength={10}
         editable={!isLoading}
       />
 
-      <Text style={styles.label}>{t("password")}</Text>
+      {/* =====================================================
+          PASSWORD
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("password")}
+      </Text>
+
       <TextInput
         style={styles.input}
         placeholder={t("placeholderPassword")}
         value={password}
         onChangeText={setPassword}
-        secureTextEntry={true}
+        secureTextEntry
         editable={!isLoading}
       />
 
-      <Text style={styles.label}>{t("confirmPassword")}</Text>
+      {/* =====================================================
+          CONFIRM PASSWORD
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("confirmPassword")}
+      </Text>
+
       <TextInput
         style={styles.input}
         placeholder={t("placeholderConfirm")}
         value={confirmPassword}
         onChangeText={setConfirmPassword}
-        secureTextEntry={true}
+        secureTextEntry
         editable={!isLoading}
       />
 
-      <Text style={styles.label}>{t("fullName")}</Text>
+      {/* =====================================================
+          FULL NAME
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("fullName")}
+      </Text>
+
       <TextInput
         style={styles.input}
         placeholder={t("placeholderName")}
@@ -565,7 +852,14 @@ export default function Register() {
         editable={!isLoading}
       />
 
-      <Text style={styles.label}>{t("nicNumber")}</Text>
+      {/* =====================================================
+          NIC
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("nicNumber")}
+      </Text>
+
       <TextInput
         style={styles.input}
         placeholder={t("placeholderNic")}
@@ -575,7 +869,14 @@ export default function Register() {
         editable={!isLoading}
       />
 
-      <Text style={styles.label}>{t("emergencyContact")}</Text>
+      {/* =====================================================
+          EMERGENCY CONTACT
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("emergencyContact")}
+      </Text>
+
       <TextInput
         style={styles.input}
         placeholder={t("placeholderEmergency")}
@@ -585,7 +886,14 @@ export default function Register() {
         editable={!isLoading}
       />
 
-      <Text style={styles.label}>{t("homeAddress")}</Text>
+      {/* =====================================================
+          ADDRESS
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("homeAddress")}
+      </Text>
+
       <TextInput
         style={styles.input}
         placeholder={t("placeholderAddress")}
@@ -594,12 +902,25 @@ export default function Register() {
         editable={!isLoading}
       />
 
-      <Text style={styles.label}>{t("dateOfBirth")}</Text>
+      {/* =====================================================
+          DATE OF BIRTH
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("dateOfBirth")}
+      </Text>
+
       <TouchableOpacity
         style={styles.dateInput}
-        onPress={() => !isLoading && setShowDatePicker(true)}
+        onPress={() => {
+          if (!isLoading) {
+            setShowDatePicker(true);
+          }
+        }}
       >
-        <Text style={styles.dateText}>{dob.toDateString()}</Text>
+        <Text style={styles.dateText}>
+          {dob.toDateString()}
+        </Text>
       </TouchableOpacity>
 
       {showDatePicker && (
@@ -607,14 +928,29 @@ export default function Register() {
           value={dob}
           mode="date"
           display="default"
+          maximumDate={new Date()}
           onChange={(event, selectedDate) => {
             setShowDatePicker(false);
-            if (selectedDate) setDob(selectedDate);
+
+            if (event.type === "dismissed") {
+              return;
+            }
+
+            if (selectedDate) {
+              setDob(selectedDate);
+            }
           }}
         />
       )}
 
-      <Text style={styles.label}>{t("bloodGroup")}</Text>
+      {/* =====================================================
+          BLOOD GROUP
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("bloodGroup")}
+      </Text>
+
       <DropDownPicker
         open={bloodGroupOpen}
         value={bloodGroup}
@@ -630,12 +966,25 @@ export default function Register() {
         listMode="SCROLLVIEW"
       />
 
-      <Text style={styles.label}>{t("lmpDate")}</Text>
+      {/* =====================================================
+          LMP
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("lmpDate")}
+      </Text>
+
       <TouchableOpacity
         style={styles.dateInput}
-        onPress={() => !isLoading && setShowLmpPicker(true)}
+        onPress={() => {
+          if (!isLoading) {
+            setShowLmpPicker(true);
+          }
+        }}
       >
-        <Text style={styles.dateText}>{lmp.toDateString()}</Text>
+        <Text style={styles.dateText}>
+          {lmp.toDateString()}
+        </Text>
       </TouchableOpacity>
 
       {showLmpPicker && (
@@ -643,14 +992,29 @@ export default function Register() {
           value={lmp}
           mode="date"
           display="default"
+          maximumDate={new Date()}
           onChange={(event, selectedDate) => {
             setShowLmpPicker(false);
-            if (selectedDate) setLmp(selectedDate);
+
+            if (event.type === "dismissed") {
+              return;
+            }
+
+            if (selectedDate) {
+              setLmp(selectedDate);
+            }
           }}
         />
       )}
 
-      <Text style={styles.label}>{t("province")}</Text>
+      {/* =====================================================
+          PROVINCE
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("province")}
+      </Text>
+
       <DropDownPicker
         open={provinceOpen}
         value={province}
@@ -670,6 +1034,7 @@ export default function Register() {
           } else {
             setDistrictItems([]);
           }
+
           setDistrict(null);
           setDivision(null);
           setDivisionItems([]);
@@ -678,7 +1043,14 @@ export default function Register() {
         }}
       />
 
-      <Text style={styles.label}>{t("district")}</Text>
+      {/* =====================================================
+          DISTRICT
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("district")}
+      </Text>
+
       <DropDownPicker
         open={districtOpen}
         value={district}
@@ -686,8 +1058,15 @@ export default function Register() {
         setOpen={setDistrictOpen}
         setValue={setDistrict}
         setItems={setDistrictItems}
-        placeholder={province ? t("selectDistrict") : t("selectProvinceFirst")}
-        style={[styles.dropdown, !province && { backgroundColor: "#f0f0f0" }]}
+        placeholder={
+          province
+            ? t("selectDistrict")
+            : t("selectProvinceFirst")
+        }
+        style={[
+          styles.dropdown,
+          !province && styles.dropdownDisabled,
+        ]}
         dropDownContainerStyle={styles.dropdownContainer}
         disabled={isLoading || !province}
         zIndex={2000}
@@ -698,13 +1077,21 @@ export default function Register() {
           } else {
             setDivisionItems([]);
           }
+
           setDivision(null);
           setGnDivision(null);
           setGnDivisionItems([]);
         }}
       />
 
-      <Text style={styles.label}>{t("residentialDivision")}</Text>
+      {/* =====================================================
+          MOH AREA
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("residentialDivision")}
+      </Text>
+
       <DropDownPicker
         open={divisionOpen}
         value={division}
@@ -712,51 +1099,118 @@ export default function Register() {
         setOpen={setDivisionOpen}
         setValue={setDivision}
         setItems={setDivisionItems}
-        placeholder={district ? t("selectMohArea") : t("selectDistrictFirst")}
-        style={[styles.dropdown, !district && { backgroundColor: "#f0f0f0" }]}
+        placeholder={
+          district
+            ? t("selectMohArea")
+            : t("selectDistrictFirst")
+        }
+        style={[
+          styles.dropdown,
+          !district && styles.dropdownDisabled,
+        ]}
         dropDownContainerStyle={styles.dropdownContainer}
-        disabled={isLoading || !district || divisionItems.length === 0}
+        disabled={
+          isLoading ||
+          !district ||
+          divisionItems.length === 0
+        }
         zIndex={1000}
         listMode="SCROLLVIEW"
-        // 🟢 FIXED: Added encodeURIComponent to prevent spaces breaking the API
         onChangeValue={async (value) => {
-          setGnDivision(null); // Clear previous selection
+          setGnDivision(null);
+          setGnDivisionItems([]);
 
-          if (value) {
-            setIsFetchingGn(true); // Start loading spinner
-            try {
-              // Ask the backend for the specific list
-              const response = await axios.get(
-                `${API_BASE_URL}/api/locations/gn-divisions?mohArea=${encodeURIComponent(value)}`,
+          if (!value) {
+            return;
+          }
+
+          setIsFetchingGn(true);
+
+          try {
+            const url =
+              `${API_BASE_URL}/api/locations/gn-divisions` +
+              `?mohArea=${encodeURIComponent(value)}`;
+
+            console.log("FETCHING GN DIVISIONS:", url);
+
+            const response = await axios.get(url);
+
+            console.log(
+              "GN DIVISION RESPONSE:",
+              response.data,
+            );
+
+            if (!Array.isArray(response.data)) {
+              console.error(
+                "Unexpected GN Division response:",
+                response.data,
               );
 
-              // Format the string array into the {label, value} objects the dropdown needs
-              const formattedItems = response.data.map((gnName: string) => ({
+              Alert.alert(
+                "GN Division Error",
+                "The server returned an unexpected GN Division response.",
+              );
+
+              return;
+            }
+
+            const formattedItems = response.data
+              .filter(
+                (gnName: unknown) =>
+                  typeof gnName === "string" &&
+                  gnName.trim().length > 0,
+              )
+              .map((gnName: string) => ({
                 label: gnName,
                 value: gnName,
               }));
 
-              setGnDivisionItems(formattedItems);
-            } catch (error) {
-              console.error(
-                "Failed to fetch GN Divisions from backend:",
-                error,
-              );
-              setGnDivisionItems([]);
+            setGnDivisionItems(formattedItems);
+
+            if (formattedItems.length === 0) {
               Alert.alert(
-                "Error",
-                "Could not load GN Divisions for this area. Check server connection.",
+                "No GN Divisions",
+                "No GN Divisions were found for the selected MOH Area.",
               );
-            } finally {
-              setIsFetchingGn(false); // Stop loading spinner
             }
-          } else {
+          } catch (error) {
+            const err = error as any;
+
+            console.error(
+              "FAILED TO FETCH GN DIVISIONS",
+            );
+
+            console.error(
+              "STATUS:",
+              err.response?.status,
+            );
+
+            console.error(
+              "RESPONSE:",
+              err.response?.data,
+            );
+
             setGnDivisionItems([]);
+
+            Alert.alert(
+              "GN Division Error",
+              getBackendMessage(err.response?.data) ||
+                "Could not load GN Divisions for this area.",
+            );
+          } finally {
+            setIsFetchingGn(false);
           }
         }}
       />
 
-      <Text style={styles.label}>{t("gnDivision") || "GN Division"}</Text>
+      {/* =====================================================
+          GN DIVISION
+      ====================================================== */}
+
+      <Text style={styles.label}>
+        {t("gnDivision") || "GN Division"}
+      </Text>
+
       <DropDownPicker
         open={gnDivisionOpen}
         value={gnDivision}
@@ -769,39 +1223,72 @@ export default function Register() {
           isFetchingGn
             ? "Loading divisions..."
             : division
-              ? t("selectGnDivision") || "Select GN Division"
-              : t("selectMohAreaFirst") || "Select MOH Area first"
+              ? t("selectGnDivision") ||
+                "Select GN Division"
+              : t("selectMohAreaFirst") ||
+                "Select MOH Area first"
         }
-        style={[styles.dropdown, !division && { backgroundColor: "#f0f0f0" }]}
+        style={[
+          styles.dropdown,
+          !division && styles.dropdownDisabled,
+        ]}
         dropDownContainerStyle={styles.dropdownContainer}
         disabled={
-          isLoading || !division || isFetchingGn || gnDivisionItems.length === 0
+          isLoading ||
+          !division ||
+          isFetchingGn ||
+          gnDivisionItems.length === 0
         }
         zIndex={500}
         listMode="SCROLLVIEW"
       />
 
+      {/* =====================================================
+          SIGN UP
+      ====================================================== */}
+
       <TouchableOpacity
-        style={[styles.button, isLoading && styles.buttonDisabled]}
+        style={[
+          styles.button,
+          isLoading && styles.buttonDisabled,
+        ]}
         onPress={handleRegister}
         disabled={isLoading}
       >
         {isLoading ? (
           <ActivityIndicator color="#fff" />
         ) : (
-          <Text style={styles.buttonText}>{t("signUp")}</Text>
+          <Text style={styles.buttonText}>
+            {t("signUp")}
+          </Text>
         )}
       </TouchableOpacity>
 
+      {/* =====================================================
+          LOGIN
+      ====================================================== */}
+
       <View style={styles.loginContainer}>
-        <Text style={styles.loginText}>{t("alreadyHaveAccount")}</Text>
-        <TouchableOpacity onPress={() => router.back()} disabled={isLoading}>
-          <Text style={styles.loginLink}>{t("login")}</Text>
+        <Text style={styles.loginText}>
+          {t("alreadyHaveAccount")}
+        </Text>
+
+        <TouchableOpacity
+          onPress={() => router.back()}
+          disabled={isLoading}
+        >
+          <Text style={styles.loginLink}>
+            {t("login")}
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
+
+// =============================================================
+// STYLES
+// =============================================================
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -811,13 +1298,20 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 50,
   },
+
   title: {
     fontSize: 32,
     fontWeight: "bold",
     color: "#FF69B4",
     marginBottom: 5,
   },
-  subtitle: { fontSize: 16, color: "#6c757d", marginBottom: 30 },
+
+  subtitle: {
+    fontSize: 16,
+    color: "#6c757d",
+    marginBottom: 30,
+  },
+
   label: {
     alignSelf: "flex-start",
     fontSize: 14,
@@ -826,6 +1320,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginLeft: 2,
   },
+
   input: {
     width: "100%",
     height: 50,
@@ -836,6 +1331,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#dee2e6",
   },
+
   dateInput: {
     width: "100%",
     height: 50,
@@ -847,19 +1343,30 @@ const styles = StyleSheet.create({
     borderColor: "#dee2e6",
     justifyContent: "center",
   },
-  dateText: { color: "#495057", fontSize: 16 },
+
+  dateText: {
+    color: "#495057",
+    fontSize: 16,
+  },
+
   dropdown: {
     backgroundColor: "#fff",
     borderRadius: 8,
     marginBottom: 15,
     borderWidth: 1,
     borderColor: "#dee2e6",
-    height: 50,
+    minHeight: 50,
   },
+
+  dropdownDisabled: {
+    backgroundColor: "#f0f0f0",
+  },
+
   dropdownContainer: {
     borderColor: "#dee2e6",
     backgroundColor: "#fff",
   },
+
   button: {
     width: "100%",
     height: 50,
@@ -871,14 +1378,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     zIndex: 1,
   },
-  buttonDisabled: { backgroundColor: "#ffb6c1" },
-  buttonText: { color: "#fff", fontSize: 18, fontWeight: "bold" },
+
+  buttonDisabled: {
+    backgroundColor: "#ffb6c1",
+  },
+
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
   loginContainer: {
     flexDirection: "row",
     marginTop: 20,
     marginBottom: 40,
     zIndex: 1,
   },
-  loginText: { color: "#6c757d", fontSize: 15 },
-  loginLink: { color: "#FF69B4", fontSize: 15, fontWeight: "bold" },
+
+  loginText: {
+    color: "#6c757d",
+    fontSize: 15,
+  },
+
+  loginLink: {
+    color: "#FF69B4",
+    fontSize: 15,
+    fontWeight: "bold",
+  },
 });

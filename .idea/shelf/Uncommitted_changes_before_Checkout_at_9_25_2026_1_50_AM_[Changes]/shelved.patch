@@ -1,0 +1,1101 @@
+Index: code/Frontend/MaathaCare-Frontend/app/index.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { LinearGradient } from \"expo-linear-gradient\";\r\nimport { useRouter } from \"expo-router\";\r\nimport React, { useEffect, useRef } from \"react\";\r\nimport {\r\n  Animated,\r\n  Dimensions,\r\n  Image,\r\n  StyleSheet,\r\n  Text,\r\n  View,\r\n} from \"react-native\";\r\n\r\nconst { width } = Dimensions.get(\"window\");\r\n\r\nexport default function SplashScreen() {\r\n  const router = useRouter();\r\n\r\n  const fadeAnim = useRef(new Animated.Value(0)).current;\r\n  const scaleAnim = useRef(new Animated.Value(0.7)).current;\r\n  const slideUpAnim = useRef(new Animated.Value(40)).current;\r\n\r\n  useEffect(() => {\r\n    Animated.parallel([\r\n      Animated.timing(fadeAnim, {\r\n        toValue: 1,\r\n        duration: 1200,\r\n        useNativeDriver: true,\r\n      }),\r\n      Animated.spring(scaleAnim, {\r\n        toValue: 1,\r\n        friction: 6,\r\n        tension: 40,\r\n        useNativeDriver: true,\r\n      }),\r\n      Animated.timing(slideUpAnim, {\r\n        toValue: 0,\r\n        duration: 1000,\r\n        useNativeDriver: true,\r\n      }),\r\n    ]).start();\r\n\r\n    const timer = setTimeout(() => {\r\n      router.replace(\"/role-selection\");\r\n    }, 3200);\r\n\r\n    return () => clearTimeout(timer);\r\n  }, [fadeAnim, router, scaleAnim, slideUpAnim]);\r\n\r\n  return (\r\n    <LinearGradient\r\n      colors={[\"#FFF0F8\", \"#FFFFFF\", \"#F0F8FF\"]}\r\n      style={styles.container}\r\n    >\r\n      <Animated.View\r\n        style={[\r\n          styles.content,\r\n          {\r\n            opacity: fadeAnim,\r\n            transform: [\r\n              { scale: scaleAnim },\r\n              { translateY: slideUpAnim },\r\n            ],\r\n          },\r\n        ]}\r\n      >\r\n        <View style={styles.glowRing} />\r\n\r\n        <Image\r\n          source={require(\"../assets/images/logo.jpeg\")}\r\n          style={styles.mainImage}\r\n          resizeMode=\"contain\"\r\n        />\r\n\r\n        <Text style={styles.appName}>MaathaCare</Text>\r\n\r\n        <View style={styles.divider} />\r\n\r\n        <Text style={styles.tagline}>\r\n          Together for a safer motherhood\r\n        </Text>\r\n      </Animated.View>\r\n    </LinearGradient>\r\n  );\r\n}\r\n\r\nconst styles = StyleSheet.create({\r\n  container: {\r\n    flex: 1,\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n  },\r\n  content: {\r\n    alignItems: \"center\",\r\n    justifyContent: \"center\",\r\n    paddingHorizontal: 30,\r\n  },\r\n  glowRing: {\r\n    position: \"absolute\",\r\n    width: 240,\r\n    height: 240,\r\n    borderRadius: 120,\r\n    backgroundColor: \"#FFF0F8\",\r\n    opacity: 0.6,\r\n    zIndex: -1,\r\n  },\r\n  mainImage: {\r\n    width: width * 0.55,\r\n    height: width * 0.55,\r\n    marginBottom: 20,\r\n  },\r\n  appName: {\r\n    fontSize: 38,\r\n    fontWeight: \"900\",\r\n    color: \"#665A7A\",\r\n    letterSpacing: 2,\r\n    textShadowColor: \"rgba(217, 98, 160, 0.15)\",\r\n    textShadowOffset: { width: 0, height: 4 },\r\n    textShadowRadius: 10,\r\n  },\r\n  divider: {\r\n    width: 40,\r\n    height: 3,\r\n    backgroundColor: \"#F472B6\",\r\n    borderRadius: 2,\r\n    marginVertical: 15,\r\n  },\r\n  tagline: {\r\n    fontSize: 14,\r\n    fontWeight: \"600\",\r\n    color: \"#988FA8\",\r\n    letterSpacing: 0.5,\r\n    textAlign: \"center\",\r\n  },\r\n});
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/code/Frontend/MaathaCare-Frontend/app/index.tsx b/code/Frontend/MaathaCare-Frontend/app/index.tsx
+--- a/code/Frontend/MaathaCare-Frontend/app/index.tsx	(revision ad04b0d30349561c3314d59d52e2dc78de6bcc59)
++++ b/code/Frontend/MaathaCare-Frontend/app/index.tsx	(date 1790277707581)
+@@ -66,7 +66,7 @@
+         <View style={styles.glowRing} />
+ 
+         <Image
+-          source={require("../assets/images/logo.jpeg")}
++          source={require("../assets/images/logo.jpeg")}
+           style={styles.mainImage}
+           resizeMode="contain"
+         />
+Index: code/Frontend/MaathaCare-Frontend/package-lock.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/code/Frontend/MaathaCare-Frontend/package-lock.json b/code/Frontend/MaathaCare-Frontend/package-lock.json
+--- a/code/Frontend/MaathaCare-Frontend/package-lock.json	(revision ad04b0d30349561c3314d59d52e2dc78de6bcc59)
++++ b/code/Frontend/MaathaCare-Frontend/package-lock.json	(date 1790275983045)
+@@ -8,6 +8,8 @@
+       "name": "maathacare-frontend",
+       "version": "1.0.0",
+       "dependencies": {
++        "@expo-google-fonts/manrope": "^0.4.2",
++        "@expo-google-fonts/playfair-display": "^0.4.2",
+         "@expo/vector-icons": "^15.0.3",
+         "@react-native-async-storage/async-storage": "^2.2.0",
+         "@react-native-community/datetimepicker": "8.4.4",
+@@ -1769,6 +1771,18 @@
+         "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+       }
+     },
++    "node_modules/@expo-google-fonts/manrope": {
++      "version": "0.4.2",
++      "resolved": "https://registry.npmjs.org/@expo-google-fonts/manrope/-/manrope-0.4.2.tgz",
++      "integrity": "sha512-BZsKe8d9BJrVnIQIZcTS7/Kac0TbXnqs/+8EBSiQxrmK6GoCO6eTkmr50D1weIk/EoF20pTmAkpWICnovATr/g==",
++      "license": "MIT AND OFL-1.1"
++    },
++    "node_modules/@expo-google-fonts/playfair-display": {
++      "version": "0.4.2",
++      "resolved": "https://registry.npmjs.org/@expo-google-fonts/playfair-display/-/playfair-display-0.4.2.tgz",
++      "integrity": "sha512-mWhBV59RUjSS3aYpytUb7UyHHTnXcHh7epAn7gq+M4XAEh5PuMKUrP8eiUfkJLb6UwHZCi7EhQpUzxHu5OL96w==",
++      "license": "MIT AND OFL-1.1"
++    },
+     "node_modules/@expo/code-signing-certificates": {
+       "version": "0.0.6",
+       "resolved": "https://registry.npmjs.org/@expo/code-signing-certificates/-/code-signing-certificates-0.0.6.tgz",
+Index: code/Frontend/MaathaCare-Frontend/app/role-selection.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import AsyncStorage from \"@react-native-async-storage/async-storage\";\r\nimport { LinearGradient } from \"expo-linear-gradient\";\r\nimport { useFocusEffect, useRouter } from \"expo-router\";\r\nimport { ArrowRight, ShieldCheck } from \"lucide-react-native\";\r\nimport React, { useCallback, useState } from \"react\";\r\nimport {\r\n  ActivityIndicator,\r\n  Dimensions,\r\n  Image,\r\n  SafeAreaView,\r\n  ScrollView,\r\n  StyleSheet,\r\n  Text,\r\n  TouchableOpacity,\r\n  View,\r\n} from \"react-native\";\r\n\r\nconst { width } = Dimensions.get(\"window\");\r\n\r\nexport default function GatewayScreen() {\r\n  const router = useRouter();\r\n  const [isCheckingUser, setIsCheckingUser] = useState(true);\r\n\r\n  useFocusEffect(\r\n    useCallback(() => {\r\n      const checkLoginStatus = async () => {\r\n        try {\r\n          // 1. Reset to loading state whenever we focus this screen\r\n          setIsCheckingUser(true);\r\n\r\n          const userToken = await AsyncStorage.getItem(\"userToken\");\r\n          const userRole = await AsyncStorage.getItem(\"userRole\");\r\n\r\n          console.log(\r\n            \"Gateway Check - Token exists:\",\r\n            !!userToken,\r\n            \"Role:\",\r\n            userRole,\r\n          );\r\n\r\n          // \uD83D\uDEE1\uFE0F THE SAFETY GUARD: If no token, STOP immediately and show UI\r\n          if (!userToken) {\r\n            setIsCheckingUser(false);\r\n            return;\r\n          }\r\n\r\n          // 2. If token exists, redirect based on role\r\n          if (userRole === \"MOTHER\") {\r\n            router.replace(\"/(tabs)\");\r\n          } else if (userRole === \"PHM\") {\r\n            router.replace(\"/phm/phm_dashboard\");\r\n          } else if (userRole === \"ADMIN\") {\r\n            // router.replace(\"/admin/admin_hub\");\r\n          } else {\r\n            // Fallback if role is corrupted or missing\r\n            setIsCheckingUser(false);\r\n          }\r\n        } catch (error) {\r\n          console.error(\"Error checking login status:\", error);\r\n          setIsCheckingUser(false);\r\n        }\r\n      };\r\n\r\n      checkLoginStatus();\r\n    }, []),\r\n  );\r\n\r\n  // --- LOADING STATE ---\r\n  if (isCheckingUser) {\r\n    return (\r\n      <View style={[styles.background, styles.loadingCenter]}>\r\n        <ActivityIndicator size=\"large\" color=\"#D962A0\" />\r\n        <Text style={styles.loadingText}>Loading MaathaCare...</Text>\r\n      </View>\r\n    );\r\n  }\r\n\r\n  // --- BEAUTIFUL UI STATE ---\r\n  return (\r\n    <LinearGradient\r\n      // Creates the soft pink top fading into the light blue bottom\r\n      colors={[\"#FFF0F8\", \"#FFFFFF\", \"#F0F8FF\"]}\r\n      style={styles.background}\r\n    >\r\n      <SafeAreaView style={styles.safeArea}>\r\n        <ScrollView\r\n          contentContainerStyle={styles.scrollContent}\r\n          showsVerticalScrollIndicator={false}\r\n        >\r\n          {/* --- TOP BRANDING (Using your logo image) --- */}\r\n          <View style={styles.header}>\r\n            <Image\r\n              source={require(\"../assets/images/logo.jpeg\")}\r\n              style={styles.logoImage}\r\n              resizeMode=\"contain\"\r\n            />\r\n          </View>\r\n\r\n          {/* --- WELCOME TEXT --- */}\r\n          <View style={styles.welcomeSection}>\r\n            <Text style={styles.welcomeTitle}>Welcome! ♡</Text>\r\n            <Text style={styles.welcomeText}>\r\n              We're here to support you{\"\\n\"}through every step of your journey.\r\n            </Text>\r\n          </View>\r\n\r\n          {/* --- HERO ILLUSTRATION (Using Center image) --- */}\r\n          <View style={styles.heroContainer}>\r\n            <Image\r\n              source={require(\"../assets/images/center.jpeg\")}\r\n              style={styles.heroImage}\r\n              resizeMode=\"contain\"\r\n            />\r\n          </View>\r\n\r\n          {/* --- ROLE CARDS --- */}\r\n\r\n          {/* 1. Mother Card */}\r\n          <View style={[styles.card, styles.motherCard]}>\r\n            <View style={styles.cardHeader}>\r\n              <View style={styles.avatarPlaceholderPink}>\r\n                <Image\r\n                  source={require(\"../assets/images/mother.jpeg\")}\r\n                  style={styles.cardIcon}\r\n                  resizeMode=\"cover\"\r\n                />\r\n              </View>\r\n              <Text style={styles.motherTitle}>I'm a Mother</Text>\r\n            </View>\r\n\r\n            <Text style={styles.cardDescription}>\r\n              Track your pregnancy, appointments, health, and baby growth.\r\n            </Text>\r\n            <Text style={styles.cardSubText}>(Login or register for care)</Text>\r\n\r\n            <TouchableOpacity\r\n              activeOpacity={0.8}\r\n              style={styles.motherButton}\r\n              onPress={() => router.push(\"/mother-login\")}\r\n            >\r\n              <ArrowRight color=\"#FFF\" size={24} />\r\n            </TouchableOpacity>\r\n          </View>\r\n\r\n          {/* 2. Health Staff Card */}\r\n          <View style={[styles.card, styles.staffCard]}>\r\n            <View style={styles.cardHeader}>\r\n              <View style={styles.avatarPlaceholderBlue}>\r\n                <Image\r\n                  source={require(\"../assets/images/PHM.jpeg\")}\r\n                  style={styles.cardIcon}\r\n                  resizeMode=\"cover\"\r\n                />\r\n              </View>\r\n              <Text style={styles.staffTitle}>I'm Health Staff</Text>\r\n            </View>\r\n\r\n            <Text style={styles.cardDescription}>\r\n              Manage patients, appointments, reports, and provide quality care.\r\n            </Text>\r\n            <Text style={styles.cardSubText}>(Secure PHM & Admin Portal)</Text>\r\n\r\n            <TouchableOpacity\r\n              activeOpacity={0.8}\r\n              style={styles.staffButton}\r\n              onPress={() => router.push(\"/staff-login\")}\r\n            >\r\n              <ArrowRight color=\"#FFF\" size={24} />\r\n            </TouchableOpacity>\r\n          </View>\r\n\r\n          {/* --- FOOTER --- */}\r\n          <View style={styles.footer}>\r\n            <ShieldCheck\r\n              color=\"#988FA8\"\r\n              size={24}\r\n              style={{ marginRight: 10 }}\r\n            />\r\n            <Text style={styles.footerText}>\r\n              Your health. Our priority.{\"\\n\"}Together for a safer motherhood.\r\n            </Text>\r\n          </View>\r\n        </ScrollView>\r\n      </SafeAreaView>\r\n    </LinearGradient>\r\n  );\r\n}\r\n\r\nconst styles = StyleSheet.create({\r\n  // --- Loading Styles ---\r\n  loadingCenter: {\r\n    flex: 1,\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n    backgroundColor: \"#FFF9FD\",\r\n  },\r\n  loadingText: {\r\n    marginTop: 15,\r\n    fontSize: 16,\r\n    color: \"#D962A0\",\r\n    fontWeight: \"600\",\r\n  },\r\n\r\n  // --- UI Styles ---\r\n  background: {\r\n    flex: 1,\r\n  },\r\n  safeArea: {\r\n    flex: 1,\r\n  },\r\n  scrollContent: {\r\n    paddingHorizontal: 24,\r\n    paddingTop: 20,\r\n    paddingBottom: 40,\r\n    alignItems: \"center\",\r\n  },\r\n  header: {\r\n    alignItems: \"center\",\r\n    marginBottom: 10,\r\n  },\r\n  logoImage: {\r\n    width: 250,\r\n    height: 120,\r\n  },\r\n  welcomeSection: {\r\n    alignItems: \"center\",\r\n    marginBottom: 20,\r\n  },\r\n  welcomeTitle: {\r\n    fontSize: 26,\r\n    fontWeight: \"800\",\r\n    color: \"#665A7A\",\r\n    marginBottom: 8,\r\n  },\r\n  welcomeText: {\r\n    fontSize: 14,\r\n    color: \"#665B77\",\r\n    textAlign: \"center\",\r\n    lineHeight: 20,\r\n  },\r\n  heroContainer: {\r\n    width: width * 0.9,\r\n    height: 180,\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n    marginBottom: 30,\r\n  },\r\n  heroImage: {\r\n    width: \"100%\",\r\n    height: \"100%\",\r\n  },\r\n  card: {\r\n    width: \"100%\",\r\n    borderRadius: 20,\r\n    padding: 20,\r\n    marginBottom: 20,\r\n    borderWidth: 1,\r\n    alignItems: \"center\",\r\n  },\r\n  motherCard: {\r\n    backgroundColor: \"#FFF5F8\",\r\n    borderColor: \"#FADADD\",\r\n  },\r\n  staffCard: {\r\n    backgroundColor: \"#F4F9FF\",\r\n    borderColor: \"#D2E5F9\",\r\n  },\r\n  cardHeader: {\r\n    flexDirection: \"row\",\r\n    alignItems: \"center\",\r\n    marginBottom: 12,\r\n  },\r\n  avatarPlaceholderPink: {\r\n    width: 50,\r\n    height: 50,\r\n    borderRadius: 25,\r\n    backgroundColor: \"#FFE4EC\",\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n    marginRight: 10,\r\n    overflow: \"hidden\",\r\n  },\r\n  avatarPlaceholderBlue: {\r\n    width: 50,\r\n    height: 50,\r\n    borderRadius: 25,\r\n    backgroundColor: \"#E4F0FF\",\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n    marginRight: 10,\r\n    overflow: \"hidden\",\r\n  },\r\n  cardIcon: {\r\n    width: \"100%\",\r\n    height: \"100%\",\r\n  },\r\n  motherTitle: {\r\n    fontSize: 22,\r\n    fontWeight: \"800\",\r\n    color: \"#D962A0\",\r\n  },\r\n  staffTitle: {\r\n    fontSize: 22,\r\n    fontWeight: \"800\",\r\n    color: \"#0056b3\",\r\n  },\r\n  cardDescription: {\r\n    fontSize: 14,\r\n    color: \"#333\",\r\n    textAlign: \"center\",\r\n    lineHeight: 20,\r\n    paddingHorizontal: 10,\r\n  },\r\n  cardSubText: {\r\n    fontSize: 12,\r\n    color: \"#666\",\r\n    textAlign: \"center\",\r\n    marginTop: 5,\r\n    marginBottom: 20,\r\n  },\r\n  motherButton: {\r\n    width: \"100%\",\r\n    height: 50,\r\n    backgroundColor: \"#F472B6\",\r\n    borderRadius: 25,\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n  },\r\n  staffButton: {\r\n    width: \"100%\",\r\n    height: 50,\r\n    backgroundColor: \"#0056b3\",\r\n    borderRadius: 25,\r\n    justifyContent: \"center\",\r\n    alignItems: \"center\",\r\n  },\r\n  footer: {\r\n    flexDirection: \"row\",\r\n    alignItems: \"center\",\r\n    marginTop: 10,\r\n    paddingHorizontal: 20,\r\n  },\r\n  footerText: {\r\n    fontSize: 12,\r\n    color: \"#665B77\",\r\n    lineHeight: 18,\r\n  },\r\n});\r\n
+===================================================================
+diff --git a/code/Frontend/MaathaCare-Frontend/app/role-selection.tsx b/code/Frontend/MaathaCare-Frontend/app/role-selection.tsx
+--- a/code/Frontend/MaathaCare-Frontend/app/role-selection.tsx	(revision ad04b0d30349561c3314d59d52e2dc78de6bcc59)
++++ b/code/Frontend/MaathaCare-Frontend/app/role-selection.tsx	(date 1790279640305)
+@@ -1,31 +1,48 @@
+ import AsyncStorage from "@react-native-async-storage/async-storage";
+-import { LinearGradient } from "expo-linear-gradient";
++import {
++  Manrope_400Regular,
++  Manrope_500Medium,
++  Manrope_600SemiBold,
++  Manrope_700Bold,
++} from "@expo-google-fonts/manrope";
++import { useFonts } from "expo-font";
+ import { useFocusEffect, useRouter } from "expo-router";
+-import { ArrowRight, ShieldCheck } from "lucide-react-native";
++import { LockKeyhole } from "lucide-react-native";
+ import React, { useCallback, useState } from "react";
+ import {
+   ActivityIndicator,
+-  Dimensions,
+   Image,
+   SafeAreaView,
+   ScrollView,
+   StyleSheet,
+   Text,
+   TouchableOpacity,
++  useWindowDimensions,
+   View,
+ } from "react-native";
+ 
+-const { width } = Dimensions.get("window");
++const BACKGROUND = "#FEF4F6";
+ 
+ export default function GatewayScreen() {
+   const router = useRouter();
+   const [isCheckingUser, setIsCheckingUser] = useState(true);
+ 
++  const { height } = useWindowDimensions();
++
++  const isCompact = height < 760;
++  const isTall = height > 850;
++
++  const [fontsLoaded] = useFonts({
++    Manrope_400Regular,
++    Manrope_500Medium,
++    Manrope_600SemiBold,
++    Manrope_700Bold,
++  });
++
+   useFocusEffect(
+     useCallback(() => {
+       const checkLoginStatus = async () => {
+         try {
+-          // 1. Reset to loading state whenever we focus this screen
+           setIsCheckingUser(true);
+ 
+           const userToken = await AsyncStorage.getItem("userToken");
+@@ -38,13 +55,11 @@
+             userRole,
+           );
+ 
+-          // 🛡️ THE SAFETY GUARD: If no token, STOP immediately and show UI
+           if (!userToken) {
+             setIsCheckingUser(false);
+             return;
+           }
+ 
+-          // 2. If token exists, redirect based on role
+           if (userRole === "MOTHER") {
+             router.replace("/(tabs)");
+           } else if (userRole === "PHM") {
+@@ -52,7 +67,6 @@
+           } else if (userRole === "ADMIN") {
+             // router.replace("/admin/admin_hub");
+           } else {
+-            // Fallback if role is corrupted or missing
+             setIsCheckingUser(false);
+           }
+         } catch (error) {
+@@ -65,284 +79,760 @@
+     }, []),
+   );
+ 
+-  // --- LOADING STATE ---
+-  if (isCheckingUser) {
++  // =========================================================
++  // LOADING
++  // =========================================================
++
++  if (isCheckingUser || !fontsLoaded) {
+     return (
+-      <View style={[styles.background, styles.loadingCenter]}>
+-        <ActivityIndicator size="large" color="#D962A0" />
++      <View style={styles.loadingContainer}>
++        <Image
++          source={require("../assets/images/logo.jpeg")}
++          style={styles.loadingLogo}
++          resizeMode="contain"
++        />
++
++        <ActivityIndicator size="large" color="#D85B94" />
++
+         <Text style={styles.loadingText}>Loading MaathaCare...</Text>
+       </View>
+     );
+   }
+ 
+-  // --- BEAUTIFUL UI STATE ---
+   return (
+-    <LinearGradient
+-      // Creates the soft pink top fading into the light blue bottom
+-      colors={["#FFF0F8", "#FFFFFF", "#F0F8FF"]}
+-      style={styles.background}
+-    >
++    <View style={styles.screen}>
++      {/* =====================================================
++          BACKGROUND BUBBLES
++      ====================================================== */}
++
++      {/* Kept away from the logo */}
++      <View style={styles.bubbleTopRightLarge} />
++      <View style={styles.bubbleTopRightSmall} />
++
++      <View style={styles.bubbleLeftUpper} />
++      <View style={styles.bubbleLeftMiddle} />
++
++      <View style={styles.bubbleRightMiddle} />
++
++      <View style={styles.bubbleBottomLeft} />
++      <View style={styles.bubbleBottomRight} />
++
+       <SafeAreaView style={styles.safeArea}>
+         <ScrollView
+-          contentContainerStyle={styles.scrollContent}
+           showsVerticalScrollIndicator={false}
++          bounces={false}
++          contentContainerStyle={[
++            styles.scrollContent,
++            {
++              minHeight: height,
++            },
++          ]}
+         >
+-          {/* --- TOP BRANDING (Using your logo image) --- */}
+-          <View style={styles.header}>
++          {/* =================================================
++              LOGO
++          ================================================== */}
++
++          <View
++            style={[
++              styles.logoWrap,
++              {
++                marginTop: isCompact ? 4 : 8,
++                marginBottom: isCompact ? 18 : 22,
++              },
++            ]}
++          >
+             <Image
+-              source={require("../assets/images/logo.jpeg")}
+-              style={styles.logoImage}
++              source={require("../assets/images/logo.jpeg")}
++              style={[
++                styles.logo,
++                {
++                  width: isCompact ? 255 : isTall ? 325 : 295,
++                  height: isCompact ? 105 : isTall ? 138 : 124,
++                },
++              ]}
+               resizeMode="contain"
+             />
+           </View>
+ 
+-          {/* --- WELCOME TEXT --- */}
+-          <View style={styles.welcomeSection}>
+-            <Text style={styles.welcomeTitle}>Welcome! ♡</Text>
+-            <Text style={styles.welcomeText}>
+-              We're here to support you{"\n"}through every step of your journey.
++          {/* =================================================
++              HEADING
++          ================================================== */}
++
++          <View
++            style={[
++              styles.headerSection,
++              {
++                marginBottom: isCompact ? 20 : isTall ? 30 : 25,
++              },
++            ]}
++          >
++            <Text
++              style={[
++                styles.title,
++                {
++                  fontSize: isCompact ? 32 : isTall ? 40 : 36,
++                  lineHeight: isCompact ? 40 : isTall ? 49 : 45,
++                },
++              ]}
++            >
++              How will you use{"\n"}MaathaCare?
+             </Text>
+-          </View>
+ 
+-          {/* --- HERO ILLUSTRATION (Using Center image) --- */}
+-          <View style={styles.heroContainer}>
+-            <Image
+-              source={require("../assets/images/center.jpeg")}
+-              style={styles.heroImage}
+-              resizeMode="contain"
+-            />
++            <Text
++              style={[
++                styles.subtitle,
++                {
++                  fontSize: isCompact ? 15 : 17,
++                },
++              ]}
++            >
++              Choose your role to get started.
++            </Text>
+           </View>
+ 
+-          {/* --- ROLE CARDS --- */}
++          {/* =================================================
++              ROLE CARDS
++          ================================================== */}
+ 
+-          {/* 1. Mother Card */}
+-          <View style={[styles.card, styles.motherCard]}>
+-            <View style={styles.cardHeader}>
+-              <View style={styles.avatarPlaceholderPink}>
+-                <Image
+-                  source={require("../assets/images/mother.jpeg")}
+-                  style={styles.cardIcon}
+-                  resizeMode="cover"
+-                />
+-              </View>
+-              <Text style={styles.motherTitle}>I'm a Mother</Text>
+-            </View>
++          <View style={styles.cardsWrap}>
++            {/* =================================================
++                MOTHER
++            ================================================== */}
++
++            <TouchableOpacity
++              activeOpacity={0.88}
++              style={styles.cardTouchable}
++              onPress={() => router.push("/mother-login")}
++            >
++              <View
++                style={[
++                  styles.card,
++                  styles.motherCard,
++                  {
++                    minHeight: isCompact ? 180 : isTall ? 220 : 202,
++                  },
++                ]}
++              >
++                <View
++                  style={[
++                    styles.imageBox,
++                    styles.motherImageBox,
++                    {
++                      width: isCompact ? 108 : isTall ? 136 : 124,
++                      height: isCompact ? 136 : isTall ? 168 : 154,
++                    },
++                  ]}
++                >
++                  <Image
++                    source={require("../assets/images/mother.jpeg")}
++                    style={styles.roleImage}
++                    resizeMode="cover"
++                  />
++                </View>
++
++                <View style={styles.cardTextArea}>
++                  <View style={styles.labelRow}>
++                    <View style={[styles.dot, styles.motherDot]} />
++
++                    <Text
++                      style={[
++                        styles.microLabel,
++                        styles.motherLabel,
++                      ]}
++                    >
++                      FOR MOTHERS
++                    </Text>
++                  </View>
+ 
+-            <Text style={styles.cardDescription}>
+-              Track your pregnancy, appointments, health, and baby growth.
+-            </Text>
+-            <Text style={styles.cardSubText}>(Login or register for care)</Text>
++                  <Text style={styles.cardTitle}>
++                    I&apos;m a Mother
++                  </Text>
++
++                  <Text style={styles.cardDescription}>
++                    Pregnancy and baby care.
++                  </Text>
+ 
+-            <TouchableOpacity
+-              activeOpacity={0.8}
+-              style={styles.motherButton}
+-              onPress={() => router.push("/mother-login")}
+-            >
+-              <ArrowRight color="#FFF" size={24} />
+-            </TouchableOpacity>
+-          </View>
++                  <Text
++                    style={[
++                      styles.cardAction,
++                      styles.motherAction,
++                    ]}
++                  >
++                    Continue as Mother
++                  </Text>
++                </View>
++              </View>
++            </TouchableOpacity>
+ 
+-          {/* 2. Health Staff Card */}
+-          <View style={[styles.card, styles.staffCard]}>
+-            <View style={styles.cardHeader}>
+-              <View style={styles.avatarPlaceholderBlue}>
+-                <Image
+-                  source={require("../assets/images/PHM.jpeg")}
+-                  style={styles.cardIcon}
+-                  resizeMode="cover"
+-                />
+-              </View>
+-              <Text style={styles.staffTitle}>I'm Health Staff</Text>
+-            </View>
++            {/* =================================================
++                HEALTH STAFF
++            ================================================== */}
++
++            <TouchableOpacity
++              activeOpacity={0.88}
++              style={styles.cardTouchable}
++              onPress={() => router.push("/staff-login")}
++            >
++              <View
++                style={[
++                  styles.card,
++                  styles.staffCard,
++                  {
++                    minHeight: isCompact ? 180 : isTall ? 220 : 202,
++                  },
++                ]}
++              >
++                <View
++                  style={[
++                    styles.imageBox,
++                    styles.staffImageBox,
++                    {
++                      width: isCompact ? 108 : isTall ? 136 : 124,
++                      height: isCompact ? 136 : isTall ? 168 : 154,
++                    },
++                  ]}
++                >
++                  <Image
++                    source={require("../assets/images/PHM.jpeg")}
++                    style={styles.roleImage}
++                    resizeMode="cover"
++                  />
++                </View>
++
++                <View style={styles.cardTextArea}>
++                  <View style={styles.labelRow}>
++                    <View style={[styles.dot, styles.staffDot]} />
++
++                    <Text
++                      style={[
++                        styles.microLabel,
++                        styles.staffLabel,
++                      ]}
++                    >
++                      CARE TEAM
++                    </Text>
++                  </View>
+ 
+-            <Text style={styles.cardDescription}>
+-              Manage patients, appointments, reports, and provide quality care.
+-            </Text>
+-            <Text style={styles.cardSubText}>(Secure PHM & Admin Portal)</Text>
++                  <Text style={styles.cardTitle}>
++                    I&apos;m Health Staff
++                  </Text>
++
++                  <Text style={styles.cardDescription}>
++                    Support mothers and manage care.
++                  </Text>
+ 
+-            <TouchableOpacity
+-              activeOpacity={0.8}
+-              style={styles.staffButton}
+-              onPress={() => router.push("/staff-login")}
+-            >
+-              <ArrowRight color="#FFF" size={24} />
++                  <Text
++                    style={[
++                      styles.cardAction,
++                      styles.staffAction,
++                    ]}
++                  >
++                    Continue as Staff
++                  </Text>
++                </View>
++              </View>
+             </TouchableOpacity>
+           </View>
+ 
+-          {/* --- FOOTER --- */}
+-          <View style={styles.footer}>
+-            <ShieldCheck
+-              color="#988FA8"
+-              size={24}
+-              style={{ marginRight: 10 }}
+-            />
+-            <Text style={styles.footerText}>
+-              Your health. Our priority.{"\n"}Together for a safer motherhood.
+-            </Text>
++          {/* =================================================
++              FOOTER
++          ================================================== */}
++
++          <View style={styles.footerArea}>
++            <View style={styles.footerCard}>
++              <View style={styles.footerIconWrap}>
++                <LockKeyhole
++                  size={18}
++                  color="#876F7C"
++                  strokeWidth={1.8}
++                />
++              </View>
++
++              <View style={styles.footerTextWrap}>
++                <Text style={styles.footerTitle}>
++                  Private and secure
++                </Text>
++
++                <Text style={styles.footerText}>
++                  Your information stays protected.
++                </Text>
++              </View>
++            </View>
+           </View>
+         </ScrollView>
+       </SafeAreaView>
+-    </LinearGradient>
++    </View>
+   );
+ }
++
++// =========================================================
++// STYLES
++// =========================================================
+ 
+ const styles = StyleSheet.create({
+-  // --- Loading Styles ---
+-  loadingCenter: {
+-    flex: 1,
+-    justifyContent: "center",
+-    alignItems: "center",
+-    backgroundColor: "#FFF9FD",
+-  },
+-  loadingText: {
+-    marginTop: 15,
+-    fontSize: 16,
+-    color: "#D962A0",
+-    fontWeight: "600",
+-  },
++  // ========================================================
++  // ROOT
++  // ========================================================
+ 
+-  // --- UI Styles ---
+-  background: {
++  screen: {
+     flex: 1,
++    backgroundColor: BACKGROUND,
++    overflow: "hidden",
+   },
++
+   safeArea: {
+     flex: 1,
+   },
++
+   scrollContent: {
++    flexGrow: 1,
++
+     paddingHorizontal: 24,
+-    paddingTop: 20,
+-    paddingBottom: 40,
+-    alignItems: "center",
++    paddingTop: 4,
++    paddingBottom: 20,
++  },
++
++  // ========================================================
++  // BUBBLES
++  // ========================================================
++
++  /*
++   * This bubble previously extended too far into the centre.
++   * It now lives mostly outside the top-right edge.
++   */
++  bubbleTopRightLarge: {
++    position: "absolute",
++
++    width: 230,
++    height: 230,
++
++    borderRadius: 115,
++
++    backgroundColor: "#F7DCE8",
++
++    top: -175,
++    right: -135,
++
++    opacity: 0.8,
+   },
+-  header: {
+-    alignItems: "center",
+-    marginBottom: 10,
++
++  /*
++   * Moved below the logo region.
++   */
++  bubbleTopRightSmall: {
++    position: "absolute",
++
++    width: 70,
++    height: 70,
++
++    borderRadius: 35,
++
++    backgroundColor: "#EEDFF0",
++
++    top: 180,
++    right: -24,
++
++    opacity: 0.58,
+   },
+-  logoImage: {
+-    width: 250,
+-    height: 120,
++
++  bubbleLeftUpper: {
++    position: "absolute",
++
++    width: 165,
++    height: 165,
++
++    borderRadius: 83,
++
++    backgroundColor: "#F0E4F1",
++
++    top: 235,
++    left: -120,
++
++    opacity: 0.65,
+   },
+-  welcomeSection: {
++
++  bubbleLeftMiddle: {
++    position: "absolute",
++
++    width: 54,
++    height: 54,
++
++    borderRadius: 27,
++
++    backgroundColor: "#F7DCE8",
++
++    top: 500,
++    left: -10,
++
++    opacity: 0.38,
++  },
++
++  bubbleRightMiddle: {
++    position: "absolute",
++
++    width: 88,
++    height: 88,
++
++    borderRadius: 44,
++
++    backgroundColor: "#F0E2F0",
++
++    top: 625,
++    right: -56,
++
++    opacity: 0.48,
++  },
++
++  bubbleBottomLeft: {
++    position: "absolute",
++
++    width: 230,
++    height: 230,
++
++    borderRadius: 115,
++
++    backgroundColor: "#F8E3EC",
++
++    bottom: -160,
++    left: -105,
++
++    opacity: 0.68,
++  },
++
++  bubbleBottomRight: {
++    position: "absolute",
++
++    width: 100,
++    height: 100,
++
++    borderRadius: 50,
++
++    backgroundColor: "#ECE0F0",
++
++    bottom: 20,
++    right: -60,
++
++    opacity: 0.42,
++  },
++
++  // ========================================================
++  // LOADING
++  // ========================================================
++
++  loadingContainer: {
++    flex: 1,
++
++    justifyContent: "center",
+     alignItems: "center",
++
++    backgroundColor: BACKGROUND,
++  },
++
++  loadingLogo: {
++    width: 230,
++    height: 110,
++
+     marginBottom: 20,
+   },
+-  welcomeTitle: {
+-    fontSize: 26,
+-    fontWeight: "800",
+-    color: "#665A7A",
+-    marginBottom: 8,
+-  },
+-  welcomeText: {
++
++  loadingText: {
++    marginTop: 12,
++
++    fontFamily: "Manrope_600SemiBold",
++
+     fontSize: 14,
+-    color: "#665B77",
+-    textAlign: "center",
+-    lineHeight: 20,
++
++    color: "#A85D84",
+   },
+-  heroContainer: {
+-    width: width * 0.9,
+-    height: 180,
+-    justifyContent: "center",
++
++  // ========================================================
++  // LOGO
++  // ========================================================
++
++  logoWrap: {
+     alignItems: "center",
+-    marginBottom: 30,
++    justifyContent: "center",
++
++    /*
++     * Keeps a clean patch behind the JPEG/PNG so bubbles
++     * never show through the logo region.
++     */
++    backgroundColor: BACKGROUND,
++
++    zIndex: 5,
++  },
++
++  logo: {
++    alignSelf: "center",
++  },
++
++  // ========================================================
++  // HEADER
++  // ========================================================
++
++  headerSection: {
++    alignItems: "flex-start",
++  },
++
++  title: {
++    maxWidth: 365,
++
++    fontFamily: "Manrope_700Bold",
++
++    letterSpacing: -1.5,
++
++    color: "#593047",
+   },
+-  heroImage: {
++
++  subtitle: {
++    marginTop: 11,
++
++    fontFamily: "Manrope_400Regular",
++
++    lineHeight: 24,
++
++    color: "#8A737E",
++  },
++
++  // ========================================================
++  // CARDS
++  // ========================================================
++
++  cardsWrap: {
+     width: "100%",
+-    height: "100%",
+   },
+-  card: {
++
++  cardTouchable: {
+     width: "100%",
+-    borderRadius: 20,
+-    padding: 20,
++
++    borderRadius: 30,
++
+     marginBottom: 20,
+-    borderWidth: 1,
++  },
++
++  card: {
++    width: "100%",
++
++    flexDirection: "row",
+     alignItems: "center",
++
++    borderRadius: 30,
++
++    paddingHorizontal: 21,
++    paddingVertical: 21,
++
++    borderWidth: 1.1,
++
++    backgroundColor: "rgba(255,255,255,0.92)",
++
++    shadowColor: "#745764",
++
++    shadowOffset: {
++      width: 0,
++      height: 7,
++    },
++
++    shadowOpacity: 0.07,
++
++    shadowRadius: 15,
++
++    elevation: 3,
+   },
++
+   motherCard: {
+-    backgroundColor: "#FFF5F8",
+-    borderColor: "#FADADD",
++    borderColor: "#EACFD9",
+   },
++
+   staffCard: {
+-    backgroundColor: "#F4F9FF",
+-    borderColor: "#D2E5F9",
++    borderColor: "#E2D7E5",
+   },
+-  cardHeader: {
+-    flexDirection: "row",
+-    alignItems: "center",
+-    marginBottom: 12,
+-  },
+-  avatarPlaceholderPink: {
+-    width: 50,
+-    height: 50,
+-    borderRadius: 25,
+-    backgroundColor: "#FFE4EC",
+-    justifyContent: "center",
+-    alignItems: "center",
+-    marginRight: 10,
++
++  // ========================================================
++  // IMAGE
++  // ========================================================
++
++  imageBox: {
++    borderRadius: 24,
++
+     overflow: "hidden",
+-  },
+-  avatarPlaceholderBlue: {
+-    width: 50,
+-    height: 50,
+-    borderRadius: 25,
+-    backgroundColor: "#E4F0FF",
++
++    marginRight: 20,
++
+     justifyContent: "center",
+     alignItems: "center",
+-    marginRight: 10,
+-    overflow: "hidden",
++  },
++
++  motherImageBox: {
++    backgroundColor: "#FBE3EC",
+   },
+-  cardIcon: {
++
++  staffImageBox: {
++    backgroundColor: "#EFEAF6",
++  },
++
++  roleImage: {
+     width: "100%",
+     height: "100%",
+   },
+-  motherTitle: {
+-    fontSize: 22,
+-    fontWeight: "800",
+-    color: "#D962A0",
+-  },
+-  staffTitle: {
+-    fontSize: 22,
+-    fontWeight: "800",
+-    color: "#0056b3",
+-  },
+-  cardDescription: {
+-    fontSize: 14,
+-    color: "#333",
+-    textAlign: "center",
+-    lineHeight: 20,
+-    paddingHorizontal: 10,
+-  },
+-  cardSubText: {
+-    fontSize: 12,
+-    color: "#666",
+-    textAlign: "center",
+-    marginTop: 5,
+-    marginBottom: 20,
+-  },
+-  motherButton: {
+-    width: "100%",
+-    height: 50,
+-    backgroundColor: "#F472B6",
+-    borderRadius: 25,
+-    justifyContent: "center",
+-    alignItems: "center",
+-  },
+-  staffButton: {
+-    width: "100%",
+-    height: 50,
+-    backgroundColor: "#0056b3",
+-    borderRadius: 25,
++
++  // ========================================================
++  // CARD TEXT
++  // ========================================================
++
++  cardTextArea: {
++    flex: 1,
++
+     justifyContent: "center",
++
++    alignItems: "flex-start",
++  },
++
++  labelRow: {
++    flexDirection: "row",
+     alignItems: "center",
++
++    marginBottom: 8,
++  },
++
++  dot: {
++    width: 7,
++    height: 7,
++
++    borderRadius: 4,
++
++    marginRight: 8,
++  },
++
++  motherDot: {
++    backgroundColor: "#D95A94",
++  },
++
++  staffDot: {
++    backgroundColor: "#806C80",
++  },
++
++  microLabel: {
++    fontFamily: "Manrope_700Bold",
++
++    fontSize: 11.5,
++
++    letterSpacing: 1.6,
++  },
++
++  motherLabel: {
++    color: "#C75A8D",
++  },
++
++  staffLabel: {
++    color: "#806D7D",
++  },
++
++  cardTitle: {
++    fontFamily: "Manrope_700Bold",
++
++    fontSize: 25,
++
++    lineHeight: 32,
++
++    letterSpacing: -0.75,
++
++    color: "#583448",
++
++    marginBottom: 7,
++  },
++
++  cardDescription: {
++    fontFamily: "Manrope_400Regular",
++
++    fontSize: 16,
++
++    lineHeight: 23,
++
++    color: "#7D6B75",
++
++    marginBottom: 12,
++  },
++
++  cardAction: {
++    fontFamily: "Manrope_600SemiBold",
++
++    fontSize: 14.5,
++
++    lineHeight: 20,
++  },
++
++  motherAction: {
++    color: "#D24D89",
+   },
+-  footer: {
++
++  staffAction: {
++    color: "#705A6E",
++  },
++
++  // ========================================================
++  // FOOTER
++  // ========================================================
++
++  footerArea: {
++    marginTop: 14,
++
++    paddingBottom: 4,
++  },
++
++  footerCard: {
++    minHeight: 78,
++
++    borderRadius: 22,
++
++    backgroundColor: "rgba(255,255,255,0.66)",
++
++    borderWidth: 1,
++    borderColor: "#EADDE4",
++
+     flexDirection: "row",
+     alignItems: "center",
+-    marginTop: 10,
++
+     paddingHorizontal: 20,
++    paddingVertical: 15,
++  },
++
++  footerIconWrap: {
++    width: 40,
++    height: 40,
++
++    borderRadius: 20,
++
++    backgroundColor: "#F5E8EE",
++
++    alignItems: "center",
++    justifyContent: "center",
++
++    marginRight: 12,
+   },
++
++  footerTextWrap: {
++    flex: 1,
++  },
++
++  footerTitle: {
++    fontFamily: "Manrope_600SemiBold",
++
++    fontSize: 14,
++
++    lineHeight: 19,
++
++    color: "#715E69",
++
++    marginBottom: 2,
++  },
++
+   footerText: {
+-    fontSize: 12,
+-    color: "#665B77",
++    fontFamily: "Manrope_400Regular",
++
++    fontSize: 12.5,
++
+     lineHeight: 18,
++
++    color: "#917E88",
+   },
+-});
++});
+\ No newline at end of file

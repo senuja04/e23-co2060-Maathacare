@@ -3,7 +3,7 @@ import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import { useFocusEffect, useRouter } from "expo-router";
 import { jwtDecode } from "jwt-decode";
-import { Activity, Bell, Calendar, Footprints } from "lucide-react-native";
+import { Activity, Calendar, Footprints } from "lucide-react-native";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next"; // 🌟 ADDED TRANSLATION
 import {
@@ -123,16 +123,6 @@ export default function HomeTab() {
           </Text>
           <Text style={styles.subText}>{t("yourGentleJourney")}</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.8}>
-          <LinearGradient
-            colors={["#FFE2F1", "#E3F1FF"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.iconCircle}
-          >
-            <Bell size={20} color="#8A6FA8" />
-          </LinearGradient>
-        </TouchableOpacity>
       </View>
 
       <View style={styles.phmCard}>

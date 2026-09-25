@@ -6,8 +6,6 @@ import {
   Dimensions,
   Image,
   StyleSheet,
-  Text,
-  View,
 } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -48,7 +46,7 @@ export default function SplashScreen() {
 
   return (
     <LinearGradient
-      colors={["#FFF0F8", "#FFFFFF", "#F0F8FF"]}
+      colors={["#FFF0F8", "#FFF0F8", "#FFF0F8"]}
       style={styles.container}
     >
       <Animated.View
@@ -63,21 +61,11 @@ export default function SplashScreen() {
           },
         ]}
       >
-        <View style={styles.glowRing} />
-
         <Image
           source={require("../assets/images/logo.png")}
           style={styles.mainImage}
           resizeMode="contain"
         />
-
-        <Text style={styles.appName}>MaathaCare</Text>
-
-        <View style={styles.divider} />
-
-        <Text style={styles.tagline}>
-          Together for a safer motherhood
-        </Text>
       </Animated.View>
     </LinearGradient>
   );
@@ -92,43 +80,10 @@ const styles = StyleSheet.create({
   content: {
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 30,
-  },
-  glowRing: {
-    position: "absolute",
-    width: 240,
-    height: 240,
-    borderRadius: 120,
-    backgroundColor: "#FFF0F8",
-    opacity: 0.6,
-    zIndex: -1,
+    paddingHorizontal: 20,
   },
   mainImage: {
-    width: width * 0.55,
-    height: width * 0.55,
-    marginBottom: 20,
-  },
-  appName: {
-    fontSize: 38,
-    fontWeight: "900",
-    color: "#665A7A",
-    letterSpacing: 2,
-    textShadowColor: "rgba(217, 98, 160, 0.15)",
-    textShadowOffset: { width: 0, height: 4 },
-    textShadowRadius: 10,
-  },
-  divider: {
-    width: 40,
-    height: 3,
-    backgroundColor: "#F472B6",
-    borderRadius: 2,
-    marginVertical: 15,
-  },
-  tagline: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#988FA8",
-    letterSpacing: 0.5,
-    textAlign: "center",
+    width: width * 0.95,
+    height: width * 0.95,
   },
 });

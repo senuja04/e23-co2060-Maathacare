@@ -12,15 +12,17 @@ import {
   Languages,
   RefreshCw,
   Search,
-  Sparkles,
   Sprout,
+  X,
 } from "lucide-react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   Alert,
+  Image,
   Keyboard,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -148,7 +150,7 @@ const cleanStoredValue = (value: string | null): string | null => {
     const parsed = JSON.parse(value);
     if (typeof parsed === "string") return parsed;
   } catch {
-    // The value was stored as plain text, which is valid.
+    // Plain text value
   }
 
   return value;
@@ -258,6 +260,7 @@ export default function ExploreScreen() {
   const [profile, setProfile] = useState<MotherProfile | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState("");
+  const [languageModalVisible, setLanguageModalVisible] = useState(false);
 
   const pregnancy = useMemo(
     () => (profile ? calculatePregnancyProgress(profile) : null),
@@ -276,6 +279,7 @@ export default function ExploreScreen() {
   const changeLanguage = async (language: AppLanguage) => {
     await i18n.changeLanguage(language);
     await AsyncStorage.setItem("appLanguage", language);
+    setLanguageModalVisible(false);
   };
 
   const openWeek = (week: number) => {
@@ -353,16 +357,23 @@ export default function ExploreScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <View style={styles.topHeaderBar}>
+        <Text style={styles.topHeaderTitle}>{t("Pregnancy Journey")}</Text>
+        <TouchableOpacity
+          style={styles.languageIconButton}
+          onPress={() => setLanguageModalVisible(true)}
+          accessibilityRole="button"
+          accessibilityLabel={t("explore.languageTitle")}
+        >
+          <Languages size={22} color="#B65378" />
+        </TouchableOpacity>
+      </View>
+
       <ScrollView
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <LanguageSwitcher
-          currentLanguage={currentLanguage}
-          onChangeLanguage={changeLanguage}
-        />
-
         <PregnancyProgressCard
           pregnancy={pregnancy}
           loading={profileLoading}
@@ -555,70 +566,74 @@ export default function ExploreScreen() {
           </View>
         </View>
       </ScrollView>
+
+      <Modal
+        visible={languageModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setLanguageModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContentCard}>
+            <View style={styles.modalHeaderRow}>
+              <View style={styles.modalTitleRow}>
+                <Languages size={20} color="#B65378" />
+                <Text style={styles.modalMainTitle}>
+                  {t("explore.languageTitle")}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => setLanguageModalVisible(false)}
+                style={styles.modalCloseButton}
+              >
+                <X size={20} color="#8A6172" />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.modalSubtitle}>
+              {t("explore.languageHint")}
+            </Text>
+
+            <View style={styles.modalOptionsList}>
+              {LANGUAGE_OPTIONS.map((option) => {
+                const active = currentLanguage === option.code;
+
+                return (
+                  <TouchableOpacity
+                    key={option.code}
+                    activeOpacity={0.84}
+                    onPress={() => void changeLanguage(option.code)}
+                    style={[
+                      styles.modalOptionRow,
+                      active && styles.modalOptionRowActive,
+                    ]}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: active }}
+                    accessibilityLabel={option.fullLabel}
+                  >
+                    <Text
+                      style={[
+                        styles.modalOptionShort,
+                        active && styles.modalOptionShortActive,
+                      ]}
+                    >
+                      {option.shortLabel}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.modalOptionLabelText,
+                        active && styles.modalOptionLabelTextActive,
+                      ]}
+                    >
+                      {option.fullLabel}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
-  );
-}
-
-function LanguageSwitcher({
-  currentLanguage,
-  onChangeLanguage,
-}: {
-  currentLanguage: AppLanguage;
-  onChangeLanguage: (language: AppLanguage) => Promise<void>;
-}) {
-  const { t } = useTranslation();
-
-  return (
-    <View style={styles.languageCard}>
-      <View style={styles.languageHeader}>
-        <View style={styles.languageIcon}>
-          <Languages size={20} color="#B65378" />
-        </View>
-        <View style={styles.languageCopy}>
-          <Text style={styles.languageTitle}>{t("explore.languageTitle")}</Text>
-          <Text style={styles.languageHint}>{t("explore.languageHint")}</Text>
-        </View>
-      </View>
-
-      <View style={styles.languageOptions}>
-        {LANGUAGE_OPTIONS.map((option) => {
-          const active = currentLanguage === option.code;
-
-          return (
-            <TouchableOpacity
-              key={option.code}
-              activeOpacity={0.84}
-              onPress={() => void onChangeLanguage(option.code)}
-              style={[
-                styles.languageButton,
-                active && styles.languageButtonActive,
-              ]}
-              accessibilityRole="button"
-              accessibilityState={{ selected: active }}
-              accessibilityLabel={option.fullLabel}
-            >
-              <Text
-                style={[
-                  styles.languageButtonShort,
-                  active && styles.languageButtonShortActive,
-                ]}
-              >
-                {option.shortLabel}
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={[
-                  styles.languageButtonLabel,
-                  active && styles.languageButtonLabelActive,
-                ]}
-              >
-                {option.fullLabel}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </View>
   );
 }
 
@@ -691,38 +706,30 @@ function PregnancyProgressCard({
 
       <View style={styles.progressTopRow}>
         <View style={styles.progressLabelPill}>
-          <Sparkles size={13} color="#A64F73" />
+          <TrimesterIcon
+            type={getFilterForWeek(pregnancy.week)}
+            color="#A64F73"
+            size={15}
+          />
           <Text style={styles.progressLabelText}>
-            {t("explore.pregnancyToday")}
+            {t(`explore.trimesters.${getFilterForWeek(pregnancy.week)}`)}
           </Text>
         </View>
         <View style={styles.trimesterTopPill}>
-          <TrimesterIcon
-            type={getFilterForWeek(pregnancy.week)}
-            color="#7A5465"
-            size={15}
-          />
           <Text style={styles.trimesterTopText}>
-            {t(`explore.trimesters.${getFilterForWeek(pregnancy.week)}`)}
+            {Math.round(pregnancy.progress)}%
           </Text>
         </View>
       </View>
 
       <View style={styles.progressMainRow}>
-        <ProgressCircle progress={pregnancy.progress} week={pregnancy.week} />
+        <ProgressCircle progress={pregnancy.progress} />
 
         <View style={styles.progressSummary}>
-          <Text style={styles.progressSummaryEyebrow}>
-            {t("explore.currentStage")}
-          </Text>
           <Text style={styles.progressSummaryTitle}>
             {t("explore.weekOf", { week: pregnancy.week })}
           </Text>
-          <Text style={styles.progressSummaryText}>
-            {t("explore.progressComplete", {
-              progress: Math.round(pregnancy.progress),
-            })}
-          </Text>
+          <Text style={styles.progressSummaryText}>Journey Complete</Text>
 
           <TouchableOpacity
             activeOpacity={0.85}
@@ -769,28 +776,19 @@ function PregnancyProgressCard({
           </Text>
         </View>
       </View>
-
-      <View style={styles.estimateNote}>
-        <Heart size={14} color="#A64F73" fill="#F3BACD" />
-        <Text style={styles.estimateNoteText}>{t("explore.estimateNote")}</Text>
-      </View>
     </LinearGradient>
   );
 }
 
-function ProgressCircle({
-  progress,
-  week,
-}: {
-  progress: number;
-  week: number;
-}) {
-  const { t } = useTranslation();
+function ProgressCircle({ progress }: { progress: number }) {
   const size = 138;
   const strokeWidth = 12;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference * (1 - progress / 100);
+
+  // Inner area dimensions calculated to fit perfectly inside the SVG stroke ring
+  const innerSize = size - strokeWidth * 2 - 8;
 
   return (
     <View style={styles.progressCircleWrapper}>
@@ -818,14 +816,21 @@ function ProgressCircle({
         />
       </Svg>
 
-      <View style={styles.progressCircleContent}>
-        <Text style={styles.progressCircleSmall}>
-          {t("explore.progressWeek")}
-        </Text>
-        <Text style={styles.progressCircleWeek}>{week}</Text>
-        <Text style={styles.progressCirclePercent}>
-          {t("explore.progressPercent", { progress: Math.round(progress) })}
-        </Text>
+      <View
+        style={[
+          styles.progressCircleContent,
+          {
+            width: innerSize,
+            height: innerSize,
+            borderRadius: innerSize / 2,
+          },
+        ]}
+      >
+        <Image
+          source={require("../../assets/images/fetus.png")}
+          style={styles.fetusImageInsideCircle}
+          resizeMode="cover"
+        />
       </View>
     </View>
   );
@@ -836,90 +841,118 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFF8FA",
   },
+  topHeaderBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F0DDE5",
+  },
+  topHeaderTitle: {
+    color: "#51343F",
+    fontSize: 24,
+    fontWeight: "900",
+  },
+  languageIconButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 14,
+    backgroundColor: "#FCEAF0",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     padding: 18,
     paddingBottom: 44,
   },
-  languageCard: {
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(81, 52, 63, 0.45)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  modalContentCard: {
+    width: "100%",
+    maxWidth: 340,
     backgroundColor: "#FFFFFF",
-    borderRadius: 24,
-    padding: 15,
-    marginBottom: 14,
+    borderRadius: 28,
+    padding: 20,
     borderWidth: 1,
     borderColor: "#F0DDE5",
     shadowColor: "#A75E7C",
-    shadowOpacity: 0.07,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
+    shadowOpacity: 0.15,
+    shadowRadius: 15,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 5,
   },
-  languageHeader: {
+  modalHeaderRow: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
-  languageIcon: {
-    width: 42,
-    height: 42,
-    borderRadius: 15,
-    backgroundColor: "#FCEAF0",
+  modalTitleRow: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    marginRight: 11,
+    gap: 10,
   },
-  languageCopy: {
-    flex: 1,
-  },
-  languageTitle: {
+  modalMainTitle: {
     color: "#51343F",
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: "900",
   },
-  languageHint: {
-    color: "#9B7E8A",
-    fontSize: 11,
-    marginTop: 2,
-  },
-  languageOptions: {
-    flexDirection: "row",
-    gap: 8,
-    marginTop: 13,
-  },
-  languageButton: {
-    flex: 1,
-    minHeight: 52,
+  modalCloseButton: {
+    width: 34,
+    height: 34,
+    borderRadius: 11,
+    backgroundColor: "#FFF7F9",
     alignItems: "center",
     justifyContent: "center",
+  },
+  modalSubtitle: {
+    color: "#9B7E8A",
+    fontSize: 12,
+    marginTop: 6,
+    marginBottom: 16,
+  },
+  modalOptionsList: {
+    gap: 10,
+  },
+  modalOptionRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    minHeight: 52,
     borderRadius: 16,
     backgroundColor: "#FFF7F9",
     borderWidth: 1.5,
     borderColor: "#ECDCE3",
-    paddingHorizontal: 5,
+    paddingHorizontal: 16,
+    gap: 14,
   },
-  languageButtonActive: {
+  modalOptionRowActive: {
     backgroundColor: "#B65378",
     borderColor: "#B65378",
-    shadowColor: "#B65378",
-    shadowOpacity: 0.18,
-    shadowRadius: 7,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 3,
   },
-  languageButtonShort: {
+  modalOptionShort: {
     color: "#8A6172",
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: "900",
+    width: 32,
   },
-  languageButtonShortActive: {
+  modalOptionShortActive: {
     color: "#FFFFFF",
   },
-  languageButtonLabel: {
-    color: "#A18792",
-    fontSize: 8,
+  modalOptionLabelText: {
+    color: "#51343F",
+    fontSize: 15,
     fontWeight: "700",
-    marginTop: 2,
   },
-  languageButtonLabelActive: {
-    color: "rgba(255,255,255,0.82)",
+  modalOptionLabelTextActive: {
+    color: "#FFFFFF",
+    fontWeight: "900",
   },
   progressHero: {
     position: "relative",
@@ -928,7 +961,7 @@ const styles = StyleSheet.create({
     padding: 20,
     minHeight: 290,
     borderWidth: 1,
-    borderColor: "#F0DCE5",
+    borderColor: "#F0DDE5",
     shadowColor: "#A75E7C",
     shadowOpacity: 0.14,
     shadowRadius: 18,
@@ -1022,24 +1055,22 @@ const styles = StyleSheet.create({
   },
   progressLabelText: {
     color: "#A64F73",
-    fontSize: 8,
+    fontSize: 11,
     fontWeight: "900",
-    letterSpacing: 0.8,
-    marginLeft: 5,
+    marginLeft: 6,
   },
   trimesterTopPill: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "rgba(255,255,255,0.64)",
     borderRadius: 999,
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
     paddingVertical: 7,
   },
   trimesterTopText: {
     color: "#6E5260",
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: "900",
-    marginLeft: 6,
   },
   progressMainRow: {
     flexDirection: "row",
@@ -1054,48 +1085,29 @@ const styles = StyleSheet.create({
   },
   progressCircleContent: {
     position: "absolute",
-    alignItems: "center",
+    overflow: "hidden",
     justifyContent: "center",
+    alignItems: "center",
   },
-  progressCircleSmall: {
-    color: "#A58996",
-    fontSize: 8,
-    fontWeight: "900",
-    letterSpacing: 1.2,
-  },
-  progressCircleWeek: {
-    color: "#6E3850",
-    fontSize: 37,
-    lineHeight: 42,
-    fontWeight: "900",
-  },
-  progressCirclePercent: {
-    color: "#A16D82",
-    fontSize: 9,
-    fontWeight: "800",
+  fetusImageInsideCircle: {
+    width: "100%",
+    height: "100%",
   },
   progressSummary: {
     flex: 1,
     marginLeft: 16,
-  },
-  progressSummaryEyebrow: {
-    color: "#AA8797",
-    fontSize: 8,
-    fontWeight: "900",
-    letterSpacing: 1,
   },
   progressSummaryTitle: {
     color: "#50323F",
     fontSize: 21,
     lineHeight: 26,
     fontWeight: "900",
-    marginTop: 4,
   },
   progressSummaryText: {
     color: "#876D79",
     fontSize: 12,
     lineHeight: 18,
-    marginTop: 5,
+    marginTop: 4,
   },
   viewCurrentWeekButton: {
     minHeight: 42,
@@ -1161,22 +1173,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: "800",
     marginTop: 4,
-  },
-  estimateNote: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    backgroundColor: "rgba(255,255,255,0.55)",
-    borderRadius: 15,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginTop: 11,
-  },
-  estimateNoteText: {
-    flex: 1,
-    color: "#856B77",
-    fontSize: 10,
-    lineHeight: 15,
-    marginLeft: 7,
   },
   quickJumpCard: {
     backgroundColor: "#FFFFFF",

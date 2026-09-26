@@ -64,6 +64,7 @@ By digitizing maternal records, automating clinic reminders, monitoring suppleme
 * 🌍 **Inclusivity First:** Complete multilingual translation support (English, Sinhala, Tamil) to eliminate language barriers.
 
 * 🔔 **Smart Push & SMS Notifications:** Automated alerts for clinic appointments, daily supplement updates, and real-time medical advisories from public health staff.
+* 🔔 **Symptom Tracker** User can update daily symptoms so the history is saved 
 
 ## Solution Architecture
 
@@ -72,10 +73,10 @@ MaathaCare follows a modern **three-tier architecture** to ensure scalability an
 [🔗 View System Architecture Diagram](./architecture-diagram.png)
 
 ### Key Components:
-* **Frontend:** A responsive web application built using [React.js] for healthcare workers and a mobile-friendly interface for mothers.
-* **Backend API:** A RESTful API developed with [Spring Boot 3.x] to handle business logic, authentication, and data processing.
-* **Database:** A [PostgreSQL] database stores encrypted patient records, clinic schedules, and medical history.
-* **Cloud Hosting:** The system is deployed on [GitHub Pages / AWS / Render], ensuring high availability.
+* **Frontend:** A responsive web application built using React.js for healthcare workers and a mobile-friendly interface for mothers. 
+* **Backend API:** A RESTful API developed with Spring Boot 3.x to handle business logic, authentication, and data processing.
+* **Database:** A PostgreSQL database via Supabase stores encrypted patient records, clinic schedules, and medical history.
+* **Cloud Hosting:** The system is deployed on Railway, ensuring high availability.
 
 ## Software Designs
 The Software Designs section of MaathaCare outlines the technical framework used to bridge clinical requirements with a modern, full-stack digital solution. The system follows a structured Three-Tier Architecture, utilizing Java with Spring Boot for a robust backend and React Native for a high-performance, cross-platform mobile frontend. Central to the design is the Database Schema (ER Diagram), which carefully organizes entities like mothers, midwives, and medical records in a PostgreSQL database to ensure data integrity and security. This architecture allows for seamless communication between the user’s device and the server, ensuring that sensitive pregnancy data is processed and stored according to engineering best practices.
@@ -92,9 +93,7 @@ Our QA strategy covers backend reliability and frontend usability across devices
 MaathaCare successfully digitizes the maternal healthcare journey in Sri Lanka, reducing the risk of missed clinics and improving the tracking of high-risk pregnancies. By replacing manual paperwork with a smart digital ecosystem, we provide healthcare workers with actionable insights to save lives.
 
 ### Future Developments
-* **AI Integration:** Predicting pregnancy complications using machine learning.
-* **Multi-language Support:** Adding Sinhala and Tamil guided instructions for better inclusivity.
-* **Offline Mode:** Allowing midwives to sync data in rural areas with poor connectivity.
+**Implement a chat option** So PHMs and Mothers can directly communicate through the app.
   
 ## Links
 
